@@ -2,6 +2,7 @@ from urllib import parse
 import requests
 from lxml import html
 from contextlib import contextmanager
+import pickle
 
 
 url_parts = ('scheme', 'netloc', 'path', 'params', 'query', 'fragment')
@@ -17,7 +18,7 @@ def pretty_print(fun_name: callable):
 def print_dict(d: dict, level: int = 0):
     shift = 4
     for k, v in d.items():
-        print(level*4*' ' + f'{k} - {v}')
+        print(level*4*' ' + f'{k}: {v}')
     
 
 def print_unquoted_url(url: str):
@@ -44,14 +45,55 @@ def parse_raw_headers_to_dict(file: str) -> dict:
     header_dict = {}
     with open(file, 'rt') as f:
         for line in f:
-            arg_list = line.split(':')
-            for arg in arg_list:
-                print(arg)
-            # header_dict[k.strip()] = v.strip()
+            ind = line.find(':')
+            head, tail = line[:ind], line[ind+1:]
+            header_dict[head.strip()] = tail.strip()
     return header_dict
             
 
-header_dict = parse_raw_headers_to_dict('tests_copy.txt')
+def get_netloc(linc: str) -> str:
+    """return netloc frome linc string
+
+    Args:
+        linc (str): linc, url
+
+    Returns:
+        str: netloc
+    """
+    parse_linc = parse.urlparse(linc)
+    return parse_linc.netloc
+
+def write_header_dect_to_file(hdict: dict, fname: str = 'test'):
+    """write headers in dict to file
+
+    Args:
+        hdict (dict): dect headers
+        fname (str, optional): file name. Defaults to 'test'.
+    """
+    with open(f'{fname}.headers', 'wb') as f:
+        pickle.dump(hdict, f)
+def write_headers_frome_file_to_file_as_dict(hfile: str, fname: str = 'test'):
+    hdict = parse_raw_headers_to_dict(hfile)
+    write_header_dect_to_file(hdict=hdict, fname=fname)
+   
+   
+def load_header_dict(fname: str) -> dict:
+    """load from file header dict
+
+    Args:
+        fname (str): file name
+
+    Returns:
+        dict: header dict
+    """
+    with open(fname, 'rb') as f:
+        hdict = pickle.load(f)
+    return hdict
+
+hdict = load_header_dict('test.headers')       
+print_dict(hdict)
+# write_headers_frome_file_to_file_as_dict('tests_copy.txt')
+# header_dict = parse_raw_headers_to_dict('tests_copy.txt')
 # print_dict(header_dict)
             
 # print_unquoted_url(url_parts)
