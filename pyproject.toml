@@ -1,0 +1,101 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scraping-test1"
+version = "0.0.1"
+# This allows use cases such as filling the version from a __version__ attribute or a Git tag
+# dynamic = ["version"]
+
+
+dependencies = [
+#   "httpx",
+#   "gidgethub[httpx]>4.0.0",
+#   "django>2.1; os_name != 'nt'",
+#   "django>2.0; os_name == 'nt'",
+]
+requires-python = ">=3.8"
+
+authors = [
+  {name = "Dmitriy Sibiryakov", email = "sibiriakoff2006@yandex.ru"},
+#   {name = "Pradyun Gedam", email = "pradyun@example.com"},
+#   {name = "Tzu-Ping Chung", email = "tzu-ping@example.com"},
+#   {name = "Another person"},
+#   {email = "different.person@example.com"},
+]
+
+
+maintainers = [
+#   {name = "Brett Cannon", email = "brett@example.com"}
+]
+
+
+description = ""
+readme = "README.md"
+
+license = {file = "LICENSE.txt"}
+    # or
+    # text = "MIT License"  
+
+
+
+# This will help PyPI’s search box to suggest your project when people search for these keywords
+keywords = [
+    # "egg", "bacon", "sausage", "tomatoes", "Lobster Thermidor"
+    ]
+
+
+
+# This information is only used for searching and browsing projects on PyPI, not for installing projects
+# To prevent a package from being uploaded to PyPI, use the special Private :: Do Not Upload classifier
+classifiers = [
+#   # How mature is this project? Common values are
+#   #   3 - Alpha
+#   #   4 - Beta
+#   #   5 - Production/Stable
+#   "Development Status :: 4 - Beta",
+
+#   # Indicate who your project is intended for
+#   "Intended Audience :: Developers",
+#   "Topic :: Software Development :: Build Tools",
+
+#   # Pick your license as you wish (see also "license" above)
+#   "License :: OSI Approved :: MIT License",
+
+#   # Specify the Python versions you support here.
+#   "Programming Language :: Python :: 3",
+#   "Programming Language :: Python :: 3.6",
+#   "Programming Language :: Python :: 3.7",
+#   "Programming Language :: Python :: 3.8",
+#   "Programming Language :: Python :: 3.9",
+]
+
+[project.optional-dependencies]
+# gui = ["PyQt5"]
+# cli = [
+#   "rich",
+#   "click",
+# ]
+
+
+# A list of URLs associated with your project, displayed on the left sidebar of your PyPI project page.
+[project.urls]
+# Homepage = "https://example.com"
+# Documentation = "https://readthedocs.org"
+# Repository = "https://github.com/me/spam.git"
+# "Bug Tracker" = "https://github.com/me/spam/issues"
+# Changelog = "https://github.com/me/spam/blob/master/CHANGELOG.md"
+
+
+# Entry points
+[project.scripts]
+# spam-cli = "spam:main_cli"
+
+[project.gui-scripts]
+# spam-gui = "spam:main_gui"
+
+
+# Some packages can be extended through plugins. Examples include Pytest and Pygments. To create such a plugin, you need to declare it in a subtable of [project.entry-points] like this:
+# [project.entry-points.""]
+# tomatoes = "spam:main_tomatoes"
