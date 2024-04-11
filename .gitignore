@@ -3,3 +3,4 @@ tests/
 # src/srcaping_test1.egg-info/
 src/scraping_test1.egg-info/*
 *__pycache__
+__pycache__/
