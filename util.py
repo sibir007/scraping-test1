@@ -5,6 +5,8 @@ from contextlib import contextmanager
 import pickle
 import json
 import os
+from pathlib import Path
+from requests import sessions
 
 HEADERS_FILE = '.headers.json'
 COOKIES_FIEL = '.cookies'
@@ -34,13 +36,13 @@ def print_dict(d: dict, level: int = 0):
 
 def print_unquoted_url(url: str):
     with pretty_print(print_unquoted_url):
-        linc_unquot = parse.unquote_plus(linc)
+        linc_unquot = parse.unquote_plus(url)
         print(linc_unquot)
     
 
 def print_parsed_url(url: str):
     with pretty_print(print_parsed_url):
-        linc_unquot = parse.unquote_plus(linc)
+        linc_unquot = parse.unquote_plus(url)
         linc_parsed = parse.urlparse(linc_unquot)
         linc_parsed_dict = linc_parsed._asdict()
         query_str = linc_parsed_dict['query']
@@ -126,7 +128,39 @@ def write_header_dict_to_json(fname: str, hdict: dict):
         json_str = json.dumps(hdict, indent=4)
         f.write(json_str)
 
+def write_unquoted_link_in_file(link: str, fname: str = 'unqoted-lincs.txt'):
+    """write unquoted link to file
 
+    Args:
+        link (str): linc to write
+        fname (str, optional): file name. Defaults to 'unqoted-lincs.txt'.
+       
+    """
+    unquoted_link = parse.unquote_plus(link)
+    with open(fname, 'at') as f:
+        f.write(unquoted_link)
+        
+def get_cookies(link: str) -> sessions.RequestsCookieJar:
+    """accept http link and forand based on it, RequestsCookieJar returns, 
+    creates an empty one if necessary
+
+    Args:
+        link (str): link
+
+    Returns:
+        sessions.RequestsCookieJar: RequestsCookieJar
+    """
+    cookies_jar: sessions.RequestsCookieJar
+    cookies_file = Path(get_netloc(link) + COOKIES_FIEL)
+    if not cookies_file.exists():
+        with open(cookies_file, 'wb') as f:
+            cookies_jar = sessions.cookiejar_from_dict({})
+            pickle.dump(cookies_jar, f)
+    else:        
+        # if cookies_file.is_file():
+        with open(cookies_file, 'rb') as f:
+            cookies_jar = pickle.load(f)
+    return cookies_jar
 
 # hdict = load_header_dict('test2.headers')       
 # print_dict(hdict)

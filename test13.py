@@ -40,14 +40,22 @@ imageUrls = article.xpath('//div[@class="image_container"]/a[1]/img[1]/@src')
 ratings = article.xpath('//p[contains(@class, "star-rating")]/@class')
 
 def normalise_str(list_str: list) -> list:
-  return list(map(lambda title: title.strip(), titles))
+  return list(map(lambda list_item: list_item.strip(), list_str))
 
 titles = normalise_str(titles)
+prices = normalise_str(prices)
+availability = normalise_str(availability)
+imageUrls = normalise_str(imageUrls)
+ratings = normalise_str(ratings)
 
 
-for title in prices:
-  print(title)
-item: HtmlElement
+articles = list(zip(titles,prices,availability,imageUrls,ratings))
+
+print(articles)
+
+# for title in titles:
+#   print(title)
+# item: HtmlElement
 # for item in prod_list:
 #   title = item.xpath(xPaths['title'])[0]
 #   # title = item[2][0].get('title')
