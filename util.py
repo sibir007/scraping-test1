@@ -7,9 +7,12 @@ import json
 import os
 from pathlib import Path
 from requests import sessions
+import lxml
 
-HEADERS_FILE = '.headers.json'
-COOKIES_FIEL = '.cookies'
+HEADERS_FILE_EXTENSION = '.headers.json'
+COOKIES_FIEL_EXTENSION = '.cookies'
+GENERAL_COOKIES_FILE_NAME = 'general' + COOKIES_FIEL_EXTENSION
+UBUNTY_HEADERS_JSON_FILE = 'ubuntu_chromium_version_122.0.6261.128.headers.json'
 
 VZLJOT_PROXY = {
   'http': 'http://SibiryakovDO:vzlsOfia1302@proxy:3128',
@@ -27,6 +30,12 @@ def pretty_print(fun_name: callable):
     yield
     print('-------------------------------')
 
+@contextmanager
+def session_cookies_manage(s: requests.Session):
+    cookies = get_cookies_from_general_file()
+    s.cookies = cookies
+    yield s
+    write_cookies_to_general_file(s.cookies)
 
 def print_dict(d: dict, level: int = 0):
     shift = 4
@@ -139,8 +148,19 @@ def write_unquoted_link_in_file(link: str, fname: str = 'unqoted-lincs.txt'):
     unquoted_link = parse.unquote_plus(link)
     with open(fname, 'at') as f:
         f.write(unquoted_link)
+
+def cookies_file_name_frome_link(link: str) -> str:
+    """return cookies file name frome link
+
+    Args:
+        link (str): linck
+
+    Returns:
+        str: cookies file name
+    """
+    return get_netloc(link) + COOKIES_FIEL_EXTENSION
         
-def get_cookies(link: str) -> sessions.RequestsCookieJar:
+def get_cookies_from_file_named_based_on_link(link: str) -> sessions.RequestsCookieJar:
     """accept http link and forand based on it, RequestsCookieJar returns, 
     creates an empty one if necessary
 
@@ -151,7 +171,7 @@ def get_cookies(link: str) -> sessions.RequestsCookieJar:
         sessions.RequestsCookieJar: RequestsCookieJar
     """
     cookies_jar: sessions.RequestsCookieJar
-    cookies_file = Path(get_netloc(link) + COOKIES_FIEL)
+    cookies_file = Path(cookies_file_name_frome_link(link))
     if not cookies_file.exists():
         with open(cookies_file, 'wb') as f:
             cookies_jar = sessions.cookiejar_from_dict({})
@@ -161,6 +181,47 @@ def get_cookies(link: str) -> sessions.RequestsCookieJar:
         with open(cookies_file, 'rb') as f:
             cookies_jar = pickle.load(f)
     return cookies_jar
+
+def get_cookies_from_general_file() -> sessions.RequestsCookieJar:
+    """return RequestsCookieJar from general fale, 
+    creates an empty one if necessary
+
+    Returns:
+        sessions.RequestsCookieJar: RequestsCookieJar
+    """
+    cookies_jar: sessions.RequestsCookieJar
+    cookies_file = Path(GENERAL_COOKIES_FILE_NAME)
+    if not cookies_file.exists():
+        with open(cookies_file, 'wb') as f:
+            cookies_jar = sessions.cookiejar_from_dict({})
+            pickle.dump(cookies_jar, f)
+    else:        
+        # if cookies_file.is_file():
+        with open(cookies_file, 'rb') as f:
+            cookies_jar = pickle.load(f)
+    return cookies_jar
+
+
+def write_cookies_to_file_named_based_on_link(cookies: sessions.RequestsCookieJar, link: str):
+    """write cookies jar to file named basen un link
+
+    Args:
+        cookies (sessions.RequestsCookieJar): RequestsCookieJar
+        link (str) : link
+    """
+    with open(cookies_file_name_frome_link(link), 'wb') as f:
+        pickle.dump(cookies, f)
+    
+def write_cookies_to_general_file(cookies: sessions.RequestsCookieJar):
+    """write cookies jar to general file
+
+    Args:
+        cookies (sessions.RequestsCookieJar): RequestsCookieJar
+    """
+    with open(GENERAL_COOKIES_FILE_NAME, 'wb') as f:
+        pickle.dump(cookies, f)
+    
+
 
 # hdict = load_header_dict('test2.headers')       
 # print_dict(hdict)
@@ -196,7 +257,80 @@ def get_cookies(link: str) -> sessions.RequestsCookieJar:
 # # print_dict(s.cookies, 'cookies')
 # for c,v in s.cookies.items():
 #     print(f'{c} -- {v}')
+############# Комплексный тэст куков начало ####################
+# searchString1 = parse.quote_plus('приборы учёта')
+# searchString2 = parse.quote_plus('мёд')
+# link1_for_tests = 'https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString={searchString}&morphology=on&search-filter=%D0%94%D0%B0%D1%82%D0%B5+%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D1%8F&pageNumber=1&sortDirection=false&recordsPerPage=_10&showLotsInfoHidden=false&sortBy=UPDATE_DATE&fz44=on&fz223=on&af=on&ca=on&pc=on&pa=on&currencyIdGeneral=-1'
+# link2_for_tests = 'https://www.google.com/search?q={searchString}_esv=89d0d0f18241ff13&sca_upv=1&sxsrf=ACQVn08QHyY43yl6Is7CiDQ-sB8SLO-0WQ%3A1713012968153&ei=6IAaZs2CCZmMwPAPoMawwAQ&udm=&ved=0ahUKEwjNltnLnr-FAxUZBhAIHSAjDEgQ4dUDCBA&uact=5&oq=cookies&gs_lp=Egxnd3Mtd2l6LXNlcnAiB2Nvb2tpZXMyDhAuGIAEGMcBGK8BGI4FMggQABiABBixAzIFEAAYgAQyBRAAGIAEMgUQABiABDIFEAAYgAQyBRAAGIAEMgUQABiABDIFEAAYgAQyBRAAGIAEMh0QLhiABBjHARivARiOBRiXBRjcBBjeBBjgBNgBAkihdlAAWIBfcAd4AZABAJgBoQGgAb0MqgEEMC4xM7gBA8gBAPgBAZgCFKACkw-oAhDCAgcQIxjqAhgnwgIWEC4YgAQYigUYQxjIAxjqAhi0AtgBAcICGRAuGIAEGIoFGEMY1AIYyAMY6gIYtALYAQHCAgoQIxiABBiKBRgnwgILEAAYgAQYsQMYgwHCAgsQLhiABBjHARjRA8ICBRAuGIAEwgIEECMYJ8ICCxAuGIAEGLEDGIMBwgILEAAYgAQYigUYsQPCAg4QLhiABBixAxjHARjRA8ICERAuGIAEGLEDGIMBGMcBGNEDwgIOEAAYgAQYigUYsQMYgwHCAgsQLhiABBjHARivAcICEBAuGIAEGAoYxwEYrwEYjgXCAgcQABiABBgKwgIREC4YgAQYxwEYrwEYmAUYmQXCAg0QLhiABBgKGMcBGNEDwgIKEAAYgAQYChixA8ICDRAuGIAEGAoYxwEYrwHCAh8QLhiABBgKGMcBGK8BGI4FGJcFGNwEGN4EGOAE2AECwgIIEC4YsQMYgATCAg0QABiABBixAxhGGP8BwgIIEC4YgAQYsQPCAiQQABiABBixAxhGGP8BGJcFGIwFGN0EGEYY_wEY9AMY9QPYAQPCAgsQLhiABBixAxjUAsICGhAuGIAEGLEDGIMBGJcFGNwEGN4EGOAE2AECmAMMugYGCAEQARgIugYGCAIQARgUugYGCAMQARgTkgcENy4xM6AH3rUB&sclient=gws-wiz-serp'
 
-# print_dict(os.environ)
-# # parse
+# s = sessions.Session()
+# s.headers = load_header_dict_from_json(UBUNTY_HEADERS_JSON_FILE)
+# s.cookies = get_cookies_from_general_file()
 
+# print_dict(s.cookies.get_dict())
+
+# resp = s.get(link1_for_tests.format(searchString=searchString1))
+# print('respons1 status code: ', resp.status_code)
+# print('response1 cookies header', resp.request.headers.get('Cookie', 'non seted'), sep=': ')
+# print_dict(s.cookies.get_dict())
+# resp = s.get(link1_for_tests.format(searchString=searchString2))
+# print('respons2 status code: ', resp.status_code)
+# print('response2 cookies header', resp.request.headers.get('Cookie', 'non seted'), sep=': ')
+# print_dict(s.cookies.get_dict())
+
+# resp = s.get(link2_for_tests.format(searchString=searchString1))
+# print('respons3 status code: ', resp.status_code)
+# print('response3 cookies header', resp.request.headers.get('Cookie', 'non seted'), sep=': ')
+# print_dict(s.cookies.get_dict())
+# resp = s.get(link2_for_tests.format(searchString=searchString2))
+# print('respons4 status code: ', resp.status_code)
+# print('response4 cookies header', resp.request.headers.get('Cookie', 'non seted'), sep=': ')
+# print_dict(s.cookies.get_dict())
+
+# write_cookies_to_general_file(s.cookies)
+# cookies = get_cookies_from_general_file()
+# print_dict(cookies.get_dict())
+
+# for item in get_cookies_from_file_named_based_on_link('zakupki.gov.ru.cookies'):
+#     print(item)
+############# Комплексный тэст куков окончание ####################
+# # # parse
+
+############## тест пагинатрорв начало #########################
+
+def _test_pagginator():
+    link1_for_tests = 'https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString={searchString}&morphology=on&search-filter=%D0%94%D0%B0%D1%82%D0%B5+%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D1%8F&pageNumber={pageNumber}&sortDirection=false&recordsPerPage=_10&showLotsInfoHidden=false&sortBy=UPDATE_DATE&fz44=on&fz223=on&af=on&ca=on&pc=on&pa=on&currencyIdGeneral=-1'.format(searchString=parse.quote_plus('приборы учёта'), pageNumber='1')
+
+    xpat_paginators = '//div[contains(@class, "paginator")]'
+    xpat_pagenumbers = '//a[@data-pagenumber]/@data-pagenumber'
+
+    s = requests.Session()
+    s.headers = load_header_dict_from_json(UBUNTY_HEADERS_JSON_FILE)
+    with session_cookies_manage(s) as s:
+        zakup_html = s.get(link1_for_tests).text
+    # with open('zakup.html', 'rt') as f:
+    #     zakup_html = f.read()    
+        
+    zak_el = html.fromstring(zakup_html)
+    paginator_el: lxml.html.HtmlElement = zak_el.xpath(xpat_paginators)[0]
+    print(paginator_el[0].get('class'))
+    page_numbers = paginator_el.xpath(xpat_pagenumbers)
+    for num in page_numbers:
+        print(num)    
+# pagenumbers = paginator_el.xpath(xpat_pagenumbers)
+# for pahe_numb in pagenumbers:
+# print(pahe_numb)
+# while next_page <= total_pages:
+#     # if next_page == 1:
+      
+
+# _test_pagginator()
+
+############## тест пагинатрорв окончание #########################
+
+def test_quoting():
+    search_link = 'https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString={searchString}&morphology=on&search-filter=%D0%94%D0%B0%D1%82%D0%B5+%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B5%D0%BD%D0%B8%D1%8F&pageNumber={pageNumber}&sortDirection=false&recordsPerPage=_10&showLotsInfoHidden=false&sortBy=UPDATE_DATE&fz44=on&fz223=on&af=on&ca=on&pc=on&pa=on&currencyIdGeneral=-1'
+    search_link_unquoted = parse.unquote_plus(search_link)
+    print(search_link_unquoted)
+    print(parse.quote(search_link_unquoted))
+    'https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString={searchString}&morphology=on&search-filter=Дате размещения&pageNumber={pageNumber}&sortDirection=false&recordsPerPage=_10&showLotsInfoHidden=false&sortBy=UPDATE_DATE&fz44=on&fz223=on&af=on&ca=on&pc=on&pa=on&currencyIdGeneral=-1'

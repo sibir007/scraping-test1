@@ -1,1 +1,30 @@
-https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString=����&morphology=on&search-filter=���� ����������&pageNumber=1&sortDirection=false&recordsPerPage=_10&showLotsInfoHidden=false&savedSearchSettingsIdHidden=&sortBy=UPDATE_DATE&fz44=on&fz223=on&af=on&ca=on&pc=on&pa=on&placingWayList=&selectedLaws=&priceFromGeneral=&priceFromGWS=&priceFromUnitGWS=&priceToGeneral=&priceToGWS=&priceToUnitGWS=&currencyIdGeneral=-1&publishDateFrom=&publishDateTo=&applSubmissionCloseDateFrom=&applSubmissionCloseDateTo=&customerIdOrg=&customerFz94id=&customerTitle=&okpd2Ids=&okpd2IdsCodes=
+https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString=����&morphology=on&search-filter=���� ����������&pageNumber=1&sortDirection=false&recordsPerPage=_10&showLotsInfoHidden=false&savedSearchSettingsIdHidden=&sortBy=UPDATE_DATE&fz44=on&fz223=on&af=on&ca=on&pc=on&pa=on&placingWayList=&selectedLaws=&priceFromGeneral=&priceFromGWS=&priceFromUnitGWS=&priceToGeneral=&priceToGWS=&priceToUnitGWS=&currencyIdGeneral=-1&publishDateFrom=&publishDateTo=&applSubmissionCloseDateFrom=&applSubmissionCloseDateTo=&customerIdOrg=&customerFz94id=&customerTitle=&okpd2Ids=&okpd2IdsCodes=
+<div class="col-9 p-0 registry-entry__header-top__title text-truncate">
+                                   44-ФЗ
+                                   Электронный аукцион
+                                    
+                                </div>
+//div[contains(@class,'registry-entry__header-top__title')]/text()
+<div class="registry-entry__header-mid__number">
+                                    
+                                    <a target="_blank" href="/epz/order/notice/ea20/view/common-info.html?regNumber=0138300015424000004">
+                                        № 0138300015424000004
+                                    </a>
+                                </div
+
+
+<div class="price-block__value" style="overflow-wrap:anywhere">
+                                2&nbsp;300&nbsp;000,00 ₽
+                            </div>
+
+//div[contains(@class,"registry-entry__header-mid__number")]/a[1]/@href
+<div class="registry-entry__header-mid__title text-normal">
+                                    
+                                        
+                                            Работа комиссии
+                                        
+                                        
+                                    
+                                </div>
+<div class="registry-entry__body-value">Поставка снегоболотохода</div>
+<div class="registry-entry__body-title">Объект закупки</div>
