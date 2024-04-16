@@ -72,7 +72,13 @@ def parse_raw_headers_to_dict(file: str) -> dict:
             head, tail = line[:ind], line[ind+1:]
             header_dict[head.strip()] = tail.strip()
     return header_dict
-            
+
+def parse_raw_headers_from_file_to_dict_and_write_json_to_file(fname_from: str, fname_to: str = 'test-header.json'):
+    """
+    """
+    h_dict = parse_raw_headers_to_dict(fname_from)
+    write_header_dict_to_json(fname_to, h_dict)
+                
 
 def get_netloc(linc: str) -> str:
     """return netloc frome linc string
@@ -355,3 +361,7 @@ def test_quoting():
     print(search_link_unquoted)
     print(parse.quote(search_link_unquoted))
     'https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString={searchString}&morphology=on&search-filter=Дате размещения&pageNumber={pageNumber}&sortDirection=false&recordsPerPage=_10&showLotsInfoHidden=false&sortBy=UPDATE_DATE&fz44=on&fz223=on&af=on&ca=on&pc=on&pa=on&currencyIdGeneral=-1'
+
+# write_headers_frome_file_to_file_as_dict('windows-chrome-headers.txt', 'windows-chrome-headers.txt')
+# parse_raw_headers_to_dict('windows-chrome-headers.txt')
+parse_raw_headers_from_file_to_dict_and_write_json_to_file('windows-chrome-headers.txt', 'windows-chrome-headers.json')
