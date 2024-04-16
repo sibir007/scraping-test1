@@ -1,0 +1,106 @@
+Windows	Linux	Mac	Function
+Managing Files			
+Ctrl + O	Ctrl + O	Cmd + O	Opens a file from the file system.
+Ctrl + N	Ctrl + N	Cmd + N	Creates a new file.
+Ctrl + S	Ctrl + S	Cmd + S	Saves the current file.
+Ctrl + Shift + S	Ctrl + Shift + S	Cmd + Shift + S	Enables Save As mode, which allows you to define an extension or rename a file
+Ctrl + K, then S		Cmd + Option + S	Save All.
+Ctrl + F4	Ctrl + W	Cmd + W	Close the current open file, saving the changes.
+Ctrl + K, then Ctrl + W	Ctrl + K, then Ctrl + W	Cmd + K, then Cmd + W	Close all open files simultaneously, saving the changes.
+Ctrl + Shift + T	Ctrl + Shift + T	Cmd + Shift + T	Reopen closed editor window.
+Ctrl + K, then R	Ctrl + K, then R	Cmd + K, then R	Open the file location of the active file in the file system.
+Ctrl + K, then P	Ctrl + K, then P	Cmd + K, then P	Copy the full path of the active file.
+Ctrl + Shift + F	Ctrl + Shift + F	Cmd + Shift + F	Show the search window.
+Managing the Editor			
+Ctrl + Backslash (\)	Ctrl + Backslash (\)	Cmd + Backslash (\)	Split the editor by adding one extra editing window.
+Ctrl + W	Ctrl + W	Cmd + W	Close the current editor window.
+Ctrl + K, then F	Ctrl + K, then F	Cmd + K, then F	Close the currently opened folder and default to the main window.
+Alt + Z	Alt + Z	Option + Z	Enable or disable word wrap on the current file.
+Ctrl + Shift + U	Ctrl + K, then Ctrl + H	Cmd + Shift + U	Toggle VSCode’s output window.
+Ctrl + K, then Z	Ctrl + K, then Z	Cmd + K, then Z	Toggle VSCode’s Zen mode.
+Editing Files			
+Ctrl + C	Ctrl + C	Cmd + C	Copy the current line if section is highlighted.
+Alt + Shift + Up arrow		Copy the current line if the section is highlighted.	Copy the line above the current line.
+Alt + Shift + Down arrow		Replace the entity in the current file.	Copy the line below the current line.
+Ctrl + X	Ctrl + X	Cmd + X	Cut the current line if no section is highlighted.
+Ctrl + F	Ctrl + F	Cmd + F	Search in the current file.
+Ctrl + H	Ctrl + H	Cmd + Option + F	Replace entity in the current file.
+Ctrl + L	Ctrl + L	Cmd + L	Select the current line.
+Ctrl + Shift + L	Ctrl + Shift + L	Cmd + Shift + L	Select all instances of the current line in the file.
+F3	F3	Cmd + G	Find next.
+Shift + F3	Shift + F3	Cmd + Shift + G	Find previous.
+Ctrl + Shift + K	Ctrl + Shift + K	Cmd + Shift + K	Move the current lineup from the current position.
+Ctrl + U	Ctrl + U	Cmd + U	Undo the most recent cursor operation.
+Alt + Up Arrow	Alt + Up Arrow	Option + Up Arrow	Move the current line up from its current position.
+Alt + Down Arrow	Alt + Down Arrow	Option + Down Arrow	Move the current line down from the current position.
+End	End	End	Go to the end of the current line.
+Home	Home	Home	Go to the beginning of the file.
+Ctrl + End	Ctrl + End	Cmd + Down Arrow	Go to the end of a file.
+Ctrl + Home	Ctrl + Home	Cmd + Up Arrow	Go the beginning of the file.
+Alt + Enter	Alt + Enter	Option + Enter	Select all occurrences of the found matches.
+Ctrl + Enter	Ctrl + Enter	Cmd + Enter	Insert a new line below the current line.
+Ctrl + Shift + Enter	Ctrl + Shift + Enter	Cmd + Shift + Enter	Insert a new line above the current line.
+Ctrl + Shift + Backslash (\)	Ctrl + Shift + Backslash (\)	Cmd + Shift + Backslash (\)	Go to the matching bracket.
+Ctrl + Right Square Bracket (])	Ctrl + Right Square Bracket (])	Cmd + Right Square Bracket (])	Automatically indent the current line if no section is highlighted.
+Ctrl + Left Square Bracket ([)	Ctrl + Left Square Bracket ([)	Cmd + Left Square Bracket ([)	Automatically outdent the current line if no section is highlighted.
+Alt + Shift + F	Ctrl + Shift + I	Option + Shift + I	Format the current document.
+Ctrl + K, then Ctrl + F	Ctrl + K, then Ctrl + F	Cmd + K, then Cmd + F	Format the selected section.
+Ctrl + Shift + H	Ctrl + Shift + H	Cmd + Shift + H	Replace in Files.
+Ctrl + Period (.)	Ctrl + Period (.)	Cmd + Period (.)	Show Quick Fix actions, if one is available.
+Ctrl + K, then M	Ctrl + K, then M	Cmd + K, then M	Alter the current file language and set to auto-detect by default.
+Ctrl + K, then Ctrl + X	Ctrl + K, then Ctrl + X	Cmd + K, then Cmd + X	Remove all excess spaces and tabs in the document.
+Ctrl + Space	Ctrl + Space	Ctrl + Space	Manually activate a code suggestion.
+Alt + Left Mouse Click	Alt + Left Mouse Click	Option + Left Mouse Click	Insert a cursor.
+Commenting Code			
+Ctrl + Slash (/)	Ctrl + Slash (/)	Cmd + Slash (/)	Comment or uncomment out the current line.
+Ctrl + K, then Ctrl + C	Ctrl + K, then Ctrl + C	Cmd + K, then Cmd + C	Create a comment on the current line.
+Ctrl + K, then Ctrl + U	Ctrl + K, then Ctrl + U	Cmd + K, then Cmd + U	Remove a comment on the current line.
+Alt + Shift + A	Ctrl + Shift + A	Option + Shift + A	Comment or uncomment out the currently selection region.
+Function Definitions			
+F12	F12	F12	Open the library definition of the current function.
+Ctrl + K, then F12	Ctrl + K, then F12	Cmd + K, then F12	Open a new window containing the library definition of the current function.
+Alt + F12	Ctrl + Shift + F10	Option + F12	Open a small window that shows the library definition of the current function.
+Shift + F12	Shift + F12	Shift + F12	Find all the functions in the project that references the current function.
+F2	F2	F2	Rename the current function.
+Ctrl + F2	Ctrl + F2		Rename the current function and replace all instances of it in the file.
+General Usage			
+Ctrl + Shift + P	Ctrl + Shift + P	Cmd + Shift + P	Launch the Command Palette.
+Ctrl + Comma (,)	Ctrl + Comma (,)	Cmd + Comma (,)	Open the user settings.
+Ctrl + K, then Ctrl + S	Ctrl + K, then Ctrl + S	Cmd + K, then Cmd + S	Launch the Keyboard Shortcut interface.
+Ctrl + Shift + N	Ctrl + Shift + N	Cmd + Shift + N	Open a new window.
+Ctrl + Shift + W	Ctrl + W	Cmd + W	Close the window.
+Ctrl + Left Mouse Click	Ctrl + Left Mouse Click		Open the link on the default browser.
+Navigating VSCode			
+Ctrl + T	Ctrl + T	Cmd + T	Quickly toggle all symbols.
+Ctrl + P	Ctrl + P	Cmd + P	Go to a specific file.
+Ctrl + Shift + O	Ctrl + Shift + O	Cmd + Shift + O	Navigate to a specific symbol.
+F11	F11	Cmd + Ctrl + F	Enable full screen mode.
+Ctrl + Shift + E	Ctrl + Shift + E	Cmd + Shift + E	Toggle Explorer/Editor Focus.
+Ctrl + Shift + X	Ctrl + Shift + X	Cmd + Shift + X	Show/Search Visual Studio extensions.
+Ctrl + Shift + D	Ctrl + Shift + D	Cmd + Shift + D	Show the Debug panel.
+Ctrl + Equal (=)	Ctrl + Equal (=)	Cmd + Equal (=)	Zoom in the VSCode interface.
+Ctrl + Minus (-)	Ctrl + Minus (-)	Cmd + Shift + Minus (-)	Zoom out the VSCode interface.
+Ctrl + Shift + Left Square Bracket ([)		Option + Shift + Left Square Bracket ([)	Hide the current region of code.
+Ctrl + Shift + Right Square Bracket (])		Option + Shift + Right Square Bracket (])	Unhide the current region of code.
+Ctrl + K, then Ctrl + 0	Ctrl + K, then Ctrl + 0	Cmd + K, then Cmd + 0	Hide all regions in the currently open file.
+Ctrl + K, then Ctrl + J	Ctrl + K, then Ctrl + J	Cmd + K, then Cmd + J	Unhide all regions in the currently open file.
+Ctrl + K, then Ctrl + Left Square Bracket ([)		Cmd + K, then Cmd + Left Square Bracket ([)	Hide all subregions in the currently open file.
+Ctrl + K, then Ctrl + Right Square Bracket (])		Cmd + K, then Cmd + Right Square Bracket (])	Unhide all subregions in the currently open file.
+Terminal Mode			
+Ctrl + Backtick (`)	Ctrl + Backtick (`)	Ctrl + Backtick (`)	Open the terminal.
+Ctrl + Shift + Backtick (`)	Ctrl + Shift + Backtick (`)	Ctrl + Shift + Backtick (`)	Create a new terminal instance.
+Ctrl + C	Ctrl + Shift + C	Cmd + C	Copy the highlighted section.
+Ctrl + V	Ctrl + Shift + V		Paste into the active terminal session.
+Ctrl + Up Arrow	Ctrl + Shift + Up Arrow	Cmd + Up Arrow	Scroll Up in the active terminal.
+Ctrl + Shift + Down Arrow	Ctrl + Shift + Down Arrow	Cmd + Down Arrow	Navigate to the top.
+Ctrl + Home	Ctrl + Home	Cmd + Home	Navigate to the top.
+Ctrl + End	Ctrl + End	Cmd + End	Scroll to bottom.
+Debug Mode			
+F9	F9	F9	Create a breakpoint at the currently highlighted line.
+F5	F5	F5	Run the code one step after the breakpoint.
+F11	F11	F11	Go inside either the child function or loop.
+Shift + F11	Shift + F11	Shift + F11	Go outside either the child function or loop.
+F10	F10	F10	Skip the execution on the current breakpoint.
+F8	F8	F8	Move the pointer to the next error in the file.
+Shift + F8	Shift + F8	Shift + F8	Move the point to the previous error in the file.
+Shift + F5	Shift + F5	Shift + F5	Stop the debugging session

@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 from requests import sessions
 import lxml
+import brotli
 
 HEADERS_FILE_EXTENSION = '.headers.json'
 COOKIES_FIEL_EXTENSION = '.cookies'
@@ -221,8 +222,28 @@ def write_cookies_to_general_file(cookies: sessions.RequestsCookieJar):
     with open(GENERAL_COOKIES_FILE_NAME, 'wb') as f:
         pickle.dump(cookies, f)
     
+def write_content_to_file(link: str, fname: str):
+    """accept link and write content to file by name
+
+    Args:
+        link (str): link to download content
+        fname (str): file name for write
+    """
+    session = requests.Session()
+    session.headers = load_header_dict_from_json(UBUNTY_HEADERS_JSON_FILE)
+    with session_cookies_manage(session) as s:
+        with open(fname, 'wb') as f:
+            f.write(s.get(link).content)
+            # s.request.
 
 
+def decompress_brotli_from_file_to_file(fname_from: str, fname_to):
+    with open(fname_from, 'rb') as fr:
+        with open(fname_to, 'wb') as fw:
+            fw.write(brotli.decompress(fr.read()))
+
+# write_content_to_file('https://www.maketecheasier.com/cheatsheet/vscode-keyboard-shortcuts/','shortcuts.br')
+# decompress_brotli_from_file_to_file('shortcuts.br', 'shortcuts.html')
 # hdict = load_header_dict('test2.headers')       
 # print_dict(hdict)
 # write_headers_frome_file_to_file_as_dict('tests_copy2.txt', fname='test2')
