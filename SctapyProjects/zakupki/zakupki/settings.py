@@ -13,9 +13,6 @@ SPIDER_MODULES = ["zakupki.spiders"]
 NEWSPIDER_MODULE = "zakupki.spiders"
 
 
-
-
-
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 CONCURRENT_REQUESTS = 16
 
@@ -206,7 +203,7 @@ RETRY_TIMES = 2
 # Default: [500, 502, 503, 504, 522, 524, 408, 429]
 RETRY_HTTP_CODES = [500, 502, 503, 504, 522, 524, 408, 429]
 # Default: all
-RETRY_EXCEPTIONS = [
+RETRY_EXCEPTIONS_for_see = [
     'twisted.internet.defer.TimeoutError',
     'twisted.internet.error.TimeoutError',
     'twisted.internet.error.DNSLookupError',
@@ -284,14 +281,145 @@ SPIDER_MIDDLEWARES_BASE_for_see = {
 }
 
 "-----------------DepthMiddleware--------------"
-scrapy.spidermiddlewares.depth.DepthMiddlewar
+# scrapy.spidermiddlewares.depth.DepthMiddlewar
+# The maximum depth that will be allowed to crawl for any site. 
+# If zero, no limit will be imposed.
+# Default: 0
+DEPTH_LIMIT = 0
+# An integer that is used to adjust the priority of a Request based on its depth.
+# Default: 0
+DEPTH_PRIORITY = 0
+# Whether to collect verbose depth stats. If this is enabled, the number of requests 
+# for each depth is collected in the stats.
+# Default: False
+DEPTH_STATS_VERBOSE = False
 
+"-----------------HttpErrorMiddleware--------------"
+# Filter out unsuccessful (erroneous) HTTP responses so that spiders don’t 
+# have to deal with them, which (most of the time) imposes an overhead, 
+# consumes more resources, and makes the spider logic more complex. 
+# According to the HTTP standard, successful responses are those whose 
+# status codes are in the 200-300 range.
+# Pass all responses with non-200 status codes contained in this list.
+# Default: []
+HTTPERROR_ALLOWED_CODES = []
+# Pass all responses, regardless of its status code.
+# Default: False
+HTTPERROR_ALLOW_ALL = False
+
+"-----------------OffsiteMiddleware--------------"
+# Filters out Requests for URLs outside the domains covered by the spider.
+# This middleware filters out every request whose host names aren’t in 
+# the spider’s allowed_domains attribute
+# If the spider doesn’t define an allowed_domains attribute, or the attribute is empty, 
+# the offsite middleware will allow all requests.
+# If the request has the dont_filter attribute set, the offsite middleware 
+# will allow the request even if its domain is not listed in allowed domains.
+
+"-----------------RefererMiddleware--------------"
+# Populates Request Referer header, based on the URL of the Response which generated it.
+# Whether to enable referer middleware.
+# Default: True
+REFERER_ENABLED = True
+# Referrer Policy to apply when populating Request “Referer” header.
+# Default: 'scrapy.spidermiddlewares.referer.DefaultReferrerPolicy'
+REFERRER_POLICY = 'scrapy.spidermiddlewares.referer.DefaultReferrerPolicy'
+
+"-----------------UrlLengthMiddleware--------------"
+# Filters out requests with URLs longer than URLLENGTH_LIMIT
+# Default: 2083
+URLLENGTH_LIMIT = 2083
+
+
+
+
+"================ EXTENSIONS ==================="
+# Typically, extensions connect to signals and perform tasks triggered by them.
+
+EXTENSIONS_BASE_for_see = {
+    "scrapy.extensions.corestats.CoreStats": 0,
+    "scrapy.extensions.telnet.TelnetConsole": 0,
+    "scrapy.extensions.memusage.MemoryUsage": 0,
+    "scrapy.extensions.memdebug.MemoryDebugger": 0,
+    "scrapy.extensions.closespider.CloseSpider": 0,
+    "scrapy.extensions.feedexport.FeedExporter": 0,
+    "scrapy.extensions.logstats.LogStats": 0,
+    "scrapy.extensions.spiderstate.SpiderState": 0,
+    "scrapy.extensions.throttle.AutoThrottle": 0,
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
 #EXTENSIONS = {
 #    "scrapy.extensions.telnet.TelnetConsole": None,
 #}
+
+"-----------------LogStats--------------"
+# scrapy.extensions.logstats.LogStats
+# Log basic stats like crawled pages and scraped items.
+
+"-----------------CoreStats--------------"
+# scrapy.extensions.corestats.CoreStats
+# Enable the collection of core statistics, provided the stats collection is enabled
+
+"-----------------TelnetConsole--------------"
+# scrapy.extensions.telnet.TelnetConsole
+# Provides a telnet console for getting into a Python interpreter inside the currently 
+# running Scrapy process, which can be very useful for debugging.
+
+"-----------------MemoryUsage--------------"
+# scrapy.extensions.memusage.MemoryUsage
+# Monitors the memory used by the Scrapy process that runs the spider and:
+# sends a notification e-mail when it exceeds a certain value
+# closes the spider when it exceeds a certain value
+# This extension is enabled by the MEMUSAGE_ENABLED setting and can be configured with the following settings:
+# MEMUSAGE_LIMIT_MB
+# MEMUSAGE_WARNING_MB
+# MEMUSAGE_NOTIFY_MAIL
+# MEMUSAGE_CHECK_INTERVAL_SECONDS
+
+
+"-----------------MemoryDebugger--------------"
+# scrapy.extensions.memdebug.MemoryDebugger
+# An extension for debugging memory usage. It collects information about:
+# objects uncollected by the Python garbage collector
+# objects left alive that shouldn’t. For more info, see Debugging memory leaks with trackref
+# To enable this extension, turn on the MEMDEBUG_ENABLED setting. The info will be stored in the stats.
+
+"-----------------CloseSpider--------------"
+# scrapy.extensions.closespider.CloseSpider
+# Closes a spider automatically when some conditions are met, using a specific closing reason for each condition.
+# The conditions for closing a spider can be configured through the following settings:
+# CLOSESPIDER_TIMEOUT
+# CLOSESPIDER_TIMEOUT_NO_ITEM
+# CLOSESPIDER_ITEMCOUNT
+# CLOSESPIDER_PAGECOUNT
+# CLOSESPIDER_ERRORCOUNT
+
+
+"-----------------StatsMailer--------------"
+# scrapy.extensions.statsmailer.StatsMailer
+# This simple extension can be used to send a notification e-mail every 
+# time a domain has finished scraping, including the Scrapy stats collected. 
+# The email will be sent to all recipients specified in the STATSMAILER_RCPTS setting.
+# Emails can be sent using the MailSender class. To see a full list of parameters, 
+# including examples on how to instantiate MailSender and use mail settings, 
+# see Sending e-mail.
+
+"-----------------PeriodicLog--------------"
+# scrapy.extensions.periodic_log.PeriodicLog
+# This extension periodically logs rich stat data as a JSON object:
+
+"-----------------StackTraceDump--------------"
+# scrapy.extensions.periodic_log.StackTraceDump
+# Dumps information about the running process when a SIGQUIT or 
+# SIGUSR2 signal is received. The information dumped is the following:
+
+
+
+
+
+
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html

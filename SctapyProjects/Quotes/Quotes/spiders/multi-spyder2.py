@@ -1,7 +1,7 @@
 from typing import Any, Iterable
 import scrapy
 from scrapy.http import Response
-
+from scrapy import Request
 
 class MyltiSpider2(scrapy.Spider):
     name = 'myltispider2'
