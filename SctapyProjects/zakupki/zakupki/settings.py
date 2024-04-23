@@ -13,13 +13,8 @@ SPIDER_MODULES = ["zakupki.spiders"]
 NEWSPIDER_MODULE = "zakupki.spiders"
 
 
-# Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = "zakupki (+http://www.yourdomain.com)"
-USER_AGENT =    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
 
 
-# Obey robots.txt rules
-ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 CONCURRENT_REQUESTS = 16
@@ -39,26 +34,7 @@ CONCURRENT_REQUESTS_PER_DOMAIN = 1
 #TELNETCONSOLE_ENABLED = False
 
 
-USER_AGENTS_WIN = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-]
-USER_AGENTS_LIN = [
-    "Mozilla/5.0 (X11; U; Linux; en-US) AppleWebKit/527+ (KHTML, like Gecko, Safari/419.3) Arora/0.6",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (Linux; Android 11; SAMSUNG SM-G973U) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/14.2 Chrome/87.0.4280.141 Mobile Safari/537.36",
-"
-]
-USER_AGENTS_MAC = [
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit/535.20 (KHTML, like Gecko) Chrome/19.0.1036.7 Safari/535.20",
-    "Opera/9.80 (Macintosh; Intel Mac OS X 10.6.8; U; fr) Presto/2.9.168 Version/11.52",
-]
 
-
-# Enable or disable spider middlewares
-# See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
-#    "zakupki.middlewares.ZakupkiSpiderMiddleware": 543,
-#}
 
 
 #A dict containing the downloader middlewares enabled by default in Scrapy. 
@@ -88,7 +64,7 @@ DOWNLOADER_MIDDLEWARES = {
    "zakupki.middlewares.ZakupkiDownloaderMiddleware": 543,
 }
 
-#-----------------CookiesMiddleware------------------
+"-----------------CookiesMiddleware------------------"
 # scrapy.downloadermiddlewares.cookies.CookiesMiddleware
 # Disable cookies (enabled by default)
 # Default: True. 
@@ -97,7 +73,7 @@ COOKIES_ENABLED = True
 # and all cookies received in responses (i.e. Set-Cookie header).
 COOKIES_DEBUG = True
 
-#-----------------DefaultHeadersMiddleware------------
+"-----------------DefaultHeadersMiddleware------------"
 # scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware
 #default headers
 # {
@@ -121,14 +97,14 @@ DEFAULT_REQUEST_HEADERS = {
     "sec-ch-ua-platform": "\"Windows\""
 }
 
-#-------------DownloadTimeoutMiddleware---------------
+"-------------DownloadTimeoutMiddleware---------------"
 # scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware
 # Default: 180 
 # The amount of time (in secs) that the downloader will wait before timing out.
 DOWNLOAD_TIMEOUT = 180
 
 
-#-------------HttpAuthMiddleware---------------------
+"-------------HttpAuthMiddleware---------------------"
 # scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -144,7 +120,7 @@ DOWNLOAD_TIMEOUT = 180
 #AUTOTHROTTLE_DEBUG = False
 
 
-#-----------------HttpCacheMiddleware----------------
+"-----------------HttpCacheMiddleware----------------"
 # scrapy.downloadermiddlewares.httpcache.HttpCacheMiddleware
 # Enable and configure HTTP caching (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
@@ -181,7 +157,7 @@ HTTPCACHE_ALWAYS_STORE = False
 # Default: []
 HTTPCACHE_IGNORE_RESPONSE_CACHE_CONTROLS = []
 
-#------------------HttpCompressionMiddleware--------------
+"-----------------HttpCompressionMiddleware--------------"
 # scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware
 # Whether the Compression middleware will be enabled.
 # This middleware allows compressed (gzip, deflate) traffic 
@@ -191,6 +167,125 @@ HTTPCACHE_IGNORE_RESPONSE_CACHE_CONTROLS = []
 # brotli or zstandard is installed, respectively.
 # Default: True
 COMPRESSION_ENABLED = True
+
+"-----------------HttpProxyMiddleware--------------"
+# scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware
+# Default: True
+HTTPPROXY_ENABLED = True
+# Default: "latin-1"
+HTTPPROXY_AUTH_ENCODING = "latin-1"
+# 
+
+"-----------------RedirectMiddleware--------------"
+# scrapy.downloadermiddlewares.redirect.RedirectMiddleware
+# This middleware handles redirection of requests based on response status.
+# Default: True
+REDIRECT_ENABLED = True
+# Default: 20
+REDIRECT_MAX_TIMES = 20
+
+"-----------------MetaRefreshMiddleware--------------"
+# scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware
+# This middleware handles redirection of requests based on meta-refresh html tag.
+# Default: True
+METAREFRESH_ENABLED = True
+# Default: []
+METAREFRESH_IGNORE_TAGS = []
+# Default: 100
+METAREFRESH_MAXDELAY = 100
+
+"-----------------RetryMiddleware--------------"
+# scrapy.downloadermiddlewares.retry.RetryMiddleware
+# A middleware to retry failed requests that are potentially 
+# caused by temporary problems such as a connection timeout 
+# or HTTP 500 error.
+# Default: True
+RETRY_ENABLED = True
+# Default: 2
+RETRY_TIMES = 2
+# Default: [500, 502, 503, 504, 522, 524, 408, 429]
+RETRY_HTTP_CODES = [500, 502, 503, 504, 522, 524, 408, 429]
+# Default: all
+RETRY_EXCEPTIONS = [
+    'twisted.internet.defer.TimeoutError',
+    'twisted.internet.error.TimeoutError',
+    'twisted.internet.error.DNSLookupError',
+    'twisted.internet.error.ConnectionRefusedError',
+    'twisted.internet.error.ConnectionDone',
+    'twisted.internet.error.ConnectError',
+    'twisted.internet.error.ConnectionLost',
+    'twisted.internet.error.TCPTimedOutError',
+    'twisted.web.client.ResponseFailed',
+    IOError,
+    'scrapy.core.downloader.handlers.http11.TunnelError',
+]
+# Adjust retry request priority relative to original request:
+# a positive priority adjust means higher priority.
+# a negative priority adjust (default) means lower priority.
+# Default: -1
+RETRY_PRIORITY_ADJUST = -1
+# 
+
+"-----------------RobotsTxtMiddleware--------------"
+# scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware
+# This middleware filters out requests forbidden by the robots.txt exclusion standard.
+# Obey robots.txt rules
+ROBOTSTXT_OBEY = True
+
+
+"-----------------DownloaderStats--------------"
+# scrapy.downloadermiddlewares.stats.DownloaderStats
+# Middleware that stores stats of all requests, responses 
+# and exceptions that pass through it.
+# Default: True
+DOWNLOADER_STATS = True
+
+"-----------------UserAgentMiddleware--------------"
+# scrapy.downloadermiddlewares.useragent.UserAgentMiddleware
+# Middleware that allows spiders to override the default user agent.
+# Default
+# Crawl responsibly by identifying yourself (and your website) on the user-agent
+#USER_AGENT = "zakupki (+http://www.yourdomain.com)"
+USER_AGENT =    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+
+USER_AGENTS_WIN = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+]
+USER_AGENTS_LIN = [
+    "Mozilla/5.0 (X11; U; Linux; en-US) AppleWebKit/527+ (KHTML, like Gecko, Safari/419.3) Arora/0.6",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 11; SAMSUNG SM-G973U) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/14.2 Chrome/87.0.4280.141 Mobile Safari/537.36",
+]
+USER_AGENTS_MAC = [
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit/535.20 (KHTML, like Gecko) Chrome/19.0.1036.7 Safari/535.20",
+    "Opera/9.80 (Macintosh; Intel Mac OS X 10.6.8; U; fr) Presto/2.9.168 Version/11.52",
+]
+
+"-----------------AjaxCrawlMiddleware--------------"
+# scrapy.downloadermiddlewares.ajaxcrawl.AjaxCrawlMiddleware
+# Middleware that finds ‘AJAX crawlable’ page variants based on meta-fragment html tag.
+# Default: False
+AJAXCRAWL_ENABLED = False
+
+"================ Spider Middleware ==================="
+# Enable or disable spider middlewares
+# See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+# Default: {}
+SPIDER_MIDDLEWARES = {
+   "zakupki.middlewares.ZakupkiSpiderMiddleware": 543,
+}
+
+SPIDER_MIDDLEWARES_BASE_for_see = {
+    "scrapy.spidermiddlewares.httperror.HttpErrorMiddleware": 50,
+    "scrapy.spidermiddlewares.offsite.OffsiteMiddleware": 500,
+    "scrapy.spidermiddlewares.referer.RefererMiddleware": 700,
+    "scrapy.spidermiddlewares.urllength.UrlLengthMiddleware": 800,
+    "scrapy.spidermiddlewares.depth.DepthMiddleware": 900,
+}
+
+"-----------------DepthMiddleware--------------"
+scrapy.spidermiddlewares.depth.DepthMiddlewar
+
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
