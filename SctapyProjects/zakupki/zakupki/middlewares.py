@@ -3,7 +3,10 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-from scrapy import signals
+from scrapy import signals, Request
+from scrapy.crawler import Crawler
+import os
+# import util
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
@@ -78,6 +81,47 @@ class ZakupkiDownloaderMiddleware:
         # - or return a Request object
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
+        return None
+
+    def process_response(self, request, response, spider):
+        # Called with the response returned from the downloader.
+
+        # Must either;
+        # - return a Response object
+        # - return a Request object
+        # - or raise IgnoreRequest
+        return response
+
+    def process_exception(self, request, exception, spider):
+        # Called when a download handler or a process_request()
+        # (from other downloader middleware) raises an exception.
+
+        # Must either:
+        # - return None: continue processing this exception
+        # - return a Response object: stops process_exception() chain
+        # - return a Request object: stops process_exception() chain
+        pass
+
+    def spider_opened(self, spider):
+        spider.logger.info("Spider opened: %s" % spider.name)
+
+
+class ZakupkiProxyDownloaderMiddleware:
+
+    def __init__(self, proxy: str = None) -> None:
+        self._proxy = proxy
+
+    @classmethod
+    def from_crawler(cls, crawler: Crawler):
+        if (os.environ.get('USERDOMAIN', 'NOT_VZLJOT') == 'VZLJOT'):
+            s = cls(crawler.settings.get('VZLJOT_PROXY'))
+        else:
+            s = cls()
+        return s
+
+    def process_request(self, request: Request, spider):
+        if  self._proxy:
+            request.meta['proxy'] = self._proxy
         return None
 
     def process_response(self, request, response, spider):

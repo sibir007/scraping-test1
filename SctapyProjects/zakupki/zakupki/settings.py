@@ -58,8 +58,14 @@ DOWNLOADER_MIDDLEWARES_BASE_to_see = {
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   "zakupki.middlewares.ZakupkiDownloaderMiddleware": 543,
+   "zakupki.middlewares.ZakupkiProxyDownloaderMiddleware": 749,
+#    "scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware": None,
 }
+
+"-----------------ZakupkiProxyDownloaderMiddleware------------------"
+VZLJOT_PROXY = 'http://SibiryakovDO:vzlsOfia1302@proxy:3128'
+
+
 
 "-----------------CookiesMiddleware------------------"
 # scrapy.downloadermiddlewares.cookies.CookiesMiddleware
@@ -227,7 +233,7 @@ RETRY_PRIORITY_ADJUST = -1
 # scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware
 # This middleware filters out requests forbidden by the robots.txt exclusion standard.
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 
 "-----------------DownloaderStats--------------"
@@ -423,9 +429,11 @@ EXTENSIONS_BASE_for_see = {
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "zakupki.pipelines.ZakupkiPipeline": 300,
-#}
+ITEM_PIPELINES = {
+   "zakupki.pipelines.ZakupkiCleanValuePipeline": 300,
+   "zakupki.pipelines.ZakupkiAbsolutUrlsPeipeline": 301,
+   "zakupki.pipelines.ZakupkiRemoveNotUsedPeipeline": 302,   
+}
 
 # Set settings whose default value is deprecated to a future-proof value
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
