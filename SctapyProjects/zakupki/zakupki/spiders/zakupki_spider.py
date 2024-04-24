@@ -1,6 +1,8 @@
 from typing import Any
 import scrapy
 from scrapy.http import Response
+from zakupki.zakupki.items import Purchase
+from scrapy.loader import ItemLoader
 
 class ZakupkiSpider(scrapy.Spider):
     name = 'zakupki'
@@ -10,5 +12,13 @@ class ZakupkiSpider(scrapy.Spider):
     ]
     
     def parse(self, response: Response, **kwargs: Any) -> Any:
-        for purchase in response.xpath('//*[contains(@class, "search-registry-entry-block")]'):
+        for purchase in response.xpath('//div[contains(@class, "search-registry-entry-block")]'):
+            p_item = Purchase(
+                fz = purchase.xpath('.//div[contains(@class, "registry-entry__header-top__title")]/text()').get(),
+                reg_num = purchase.xpath('.//div[contains(@class, "registry-entry__header-mid__number")]/a/text()').get(),
+                reg_num_href = purchase.xpath('.//div[contains(@class, "registry-entry__header-mid__number")]/a/@href').get(),
+            )
             
+            # l = ItemLoader(item=Purchase(), response=purchase)
+            # l.add_xpath('fz', './/div[contains(@class, "registry-entry__header-top__title")]/text()')
+            # l.add_xpath('')
