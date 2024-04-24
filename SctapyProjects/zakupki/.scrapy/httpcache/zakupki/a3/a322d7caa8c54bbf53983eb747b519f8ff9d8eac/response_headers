@@ -1,0 +1,16 @@
+Content-Length: 41612
+Server: nginx
+Date: Wed, 24 Apr 2024 05:59:39 GMT
+Content-Type: text/html;charset=UTF-8
+Vary: Accept-Encoding
+X-Powered-By: Undertow/1
+X-Powered-By: JSP/2.3
+X-Xss-Protection: 0
+X-Xss-Protection: 1; mode=block
+Content-Language: ru-
+X-Frame-Options: SAMEORIGIN
+Content-Encoding: gzip
+X-Varnish: 419431900 398071416
+Age: 923
+Via: 1.1 varnish (Varnish/6.3)
+Accept-Ranges: bytes
