@@ -17,17 +17,23 @@ class ZakupkiSpider(scrapy.Spider):
     ]
     
     def parse(self, response: Response, **kwargs: Any) -> Any:
-        # response.
         for purchase in response.xpath('//div[contains(@class, "search-registry-entry-block")]'):
             p_item = Purchase(
-                url = response.url,
+                # url = response.url,
                 date = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime()),
                 fz = purchase.xpath('.//div[contains(@class, "registry-entry__header-top__title")]/text()').get(),
                 reg_num = purchase.xpath('.//div[contains(@class, "registry-entry__header-mid__number")]/a/text()').get(),
-                reg_num_href = purchase.xpath('.//div[contains(@class, "registry-entry__header-mid__number")]/a/@href').get(),
+                reg_num_href = response.urljoin(purchase.xpath('.//div[contains(@class, "registry-entry__header-mid__number")]/a/@href').get()),
                 stage = purchase.xpath('.//div[contains(@class, "registry-entry__header-mid__title")]/text()').get(),
                 p_object = purchase.xpath('.//div[contains(@class, "registry-entry__body-value")]/text()').get(),
                 organization_type = purchase.xpath('.//div[@class="registry-entry__body"]/child::*[2]/child::*[1]/text()').get(),
+                organization_name =  purchase.xpath('.//div[contains(@class, "registry-entry__body-href")]/a/text()').get(),
+                organization_href = response.urljoin(purchase.xpath('.//div[contains(@class, "registry-entry__body-href")]/a/@href').get()) ,
+                s_price = purchase.xpath('.//div[contains(@class, "price-block__value")]/text()').get(),
+                posted = purchase.xpath('.//div[normalize-space(.)="Размещено"]/parent::*/div[2]/text()').get(),
+                updated = purchase.xpath('.//div[normalize-space(.)="Обновлено"]/parent::*/div[2]/text()').get(),
+                ending = purchase.xpath('.//div[normalize-space(.)="Окончание подачи заявок"]/following-sibling::div[1]/text()').get(),
+                documents_href = response.urljoin(purchase.xpath('.//a[normalize-space(.)="Документы"]/@href').get()),
             )
             yield p_item
             

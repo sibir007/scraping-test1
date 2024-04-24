@@ -85,17 +85,17 @@ class ZakupkiCleanValuePipeline:
         return self.rk.sub(' ', value).strip()
         
 
-class ZakupkiAbsolutUrlsPeipeline:
+# class ZakupkiAbsolutUrlsPeipeline:
     
-    def process_item(self, item: Purchase, spider: Spider):
-        adapter = ItemAdapter(item)
-        url = adapter.get('url')
-        adapter['reg_num_href'] = urljoin(url, adapter['reg_num_href'])
-        return item
+#     def process_item(self, item: Purchase, spider: Spider):
+#         adapter = ItemAdapter(item)
+#         url = adapter.get('url')
+#         adapter['reg_num_href'] = urljoin(url, adapter['reg_num_href'])
+#         return item
    
-class ZakupkiRemoveNotUsedPeipeline:
+# class ZakupkiRemoveNotUsedPeipeline:
     
-    def process_item(self, item: Purchase, spider: Spider):
-        adapter = ItemAdapter(item)
-        del adapter['url']
-        return item        
+#     def process_item(self, item: Purchase, spider: Spider):
+#         adapter = ItemAdapter(item)
+#         del adapter['url']
+#         return item        

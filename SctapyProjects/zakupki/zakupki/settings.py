@@ -1,3 +1,4 @@
+import pathlib
 # Scrapy settings for zakupki project
 #
 # For simplicity, this file contains only settings considered important or
@@ -425,17 +426,98 @@ EXTENSIONS_BASE_for_see = {
 
 
 
-
-
+"================ ITEM_PIPELINE ==================="
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    "zakupki.pipelines.ZakupkiCleanValuePipeline": 300,
-   "zakupki.pipelines.ZakupkiAbsolutUrlsPeipeline": 301,
-   "zakupki.pipelines.ZakupkiRemoveNotUsedPeipeline": 302,   
+#    "zakupki.pipelines.ZakupkiAbsolutUrlsPeipeline": 301,
+#    "zakupki.pipelines.ZakupkiRemoveNotUsedPeipeline": 302,   
 }
+
+
 
 # Set settings whose default value is deprecated to a future-proof value
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
-FEED_EXPORT_ENCODING = "utf-8"
+# FEED_EXPORT_ENCODING = "utf-8"
+
+"================ Feed exports ==================="
+# Scrapy generates multiple output files storing up 
+# to the specified number of items in each output file.
+# dirname/%(batch_id)d-filename%(batch_time)s.json"
+# Default: 0
+# FEED_EXPORT_BATCH_ITEM_COUNT = 100
+
+# "%(spider_name)s.jsonl"
+
+FEEDS = {
+    'feed/%(name)s-%(time)s.items.json': {
+        'format': 'json',
+        'encoding': 'utf8',
+        'store_empty': False,
+        'item_classes': ['zakupki.items.Purchase',], # [MyItemClass1, 'myproject.items.MyItemClass2'],
+        'fields': None,
+        'indent': 4,
+        'item_export_kwargs': {
+           'export_empty_fields': True,
+        },
+        'overwrite': True, 
+    },
+    'feed/zakupki.items.xml': {
+        'format': 'xml',
+        # 'fields': ['reg_num', 'reg_num_href'],
+        # 'item_filter': MyCustomFilter1,
+        'encoding': 'utf8',
+        'indent': 8,
+        'overwrite': True, 
+    },
+    pathlib.Path('feed/zakupki.items.csv.gz'): {
+        'format': 'csv',
+        'fields': ['date', 'p_object'],
+        # 'item_filter': 'myproject.filters.MyCustomFilter2',
+        # 'postprocessing': [MyPlugin1, 'scrapy.extensions.postprocessing.GzipPlugin'],
+        'gzip_compresslevel': 5,
+        'overwrite': True, 
+    },
+    # 'stdout': None,
+}
+
+"================ Logging ==================="
+# logging.CRITICAL - for critical errors (highest severity)
+# logging.ERROR - for regular errors
+# logging.WARNING - for warning messages
+# logging.INFO - for informational messages
+# logging.DEBUG - for debugging messages (lowest severity)
+# logging.warning("This is a warning")
+# logger = logging.getLogger()
+# logger = logging.getLogger("mycustomlogger")
+# logger = logging.getLogger(__name__)
+
+LOG_FILE = "%(name)s-%(time)s.log"
+# False, the file will be overwritten (discarding the 
+# output from previous runs, if any)
+# LOG_FILE_APPEND = True
+# LOG_ENABLED is True, log messages will be displayed 
+# on the standard error
+LOG_ENABLED = True
+# Default: 'utf-8'
+LOG_ENCODING = 'utf-8'
+# determines the minimum level of severity to display,
+# Default: 'DEBUG'
+# LOG_LEVEL = 'DEBUG'
+LOG_LEVEL = 'INFO'
+# Default: '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
+LOG_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
+# Default: '%Y-%m-%d %H:%M:%S'
+LOG_DATEFORMAT = '%Y-%m-%d %H:%M:%S'
+# If True, all standard output (and error) of 
+# your process will be redirected to the log. 
+# For example if you print('hello') it will appear 
+# in the Scrapy log.
+# Default: False
+LOG_STDOUT = False
+# If True, the logs will just contain the root path. 
+# If it is set to False then it displays the component responsible for the log output
+# Default: False
+LOG_SHORT_NAMES = False
