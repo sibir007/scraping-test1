@@ -113,8 +113,8 @@ def main():
     prosess_element_list(items_list, driver, store_elemen_coru)
     count_pages = 4
     try:
-        # while True:
-        while count_pages := count_pages -1 :
+        while True:
+        # while count_pages := count_pages -1 :
             next_page_el: WebElement = driver.find_element(By.XPATH, NEXT_PAGE_XPATH)
             next_page_el.click()
             # print_element(driver)
@@ -198,12 +198,12 @@ def find_element_or_none(element: WebElement, xpath: str) -> Union[WebElement, N
 def clean_item(item: Mapping[str, str]) -> Mapping[str, str]:
     item = {k: RK.sub(' ', v).strip() for k, v in item.items()}
     return item
-
+# CSV ВАРИАНТ
 def store_elemen():
     def corutine_f():
         file = Path('zakupki2.csv')
         # if not file.exists():
-        with open(file, 'w') as csv_file:
+        with open(file, 'w', encoding="utf-8", newline='\n') as csv_file:
             item = yield
             fields_name = item.keys()
             writer = csv.DictWriter(csv_file, fieldnames=fields_name)
@@ -218,7 +218,27 @@ def store_elemen():
     coru = corutine_f()
     next(coru)
     return coru
-                
+
+# # LINE ВАриант
+# def store_elemen():
+#     def corutine_f():
+#         file = Path('zakupki3.txt')
+#         # if not file.exists():
+#         with open(file, 'wt', encoding="utf-8") as txt_file:
+#             item: dict = yield
+#             # fields_name = item.keys()
+#             # txt_file.write(str(fields_name)+'\n')
+#             # writer.writerow(item)
+#             txt_file.write(item.__repr__())
+#             try:
+#                 while True:
+#                     item = yield
+#                     txt_file.write(item.__repr__())
+#             except StopIteration as e:
+#                 pass
+#     coru = corutine_f()
+#     next(coru)
+#     return coru                
     # else:
     #     with open(file, 'wa') as csv_file:
     #         fields_name = item.keys()
