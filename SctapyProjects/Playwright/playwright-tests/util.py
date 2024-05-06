@@ -1,5 +1,5 @@
 from playwright.sync_api import sync_playwright, Browser, Page, Request, Response
-from typing import Mapping, Tuple, List, Sequence, Union
+from typing import Mapping, Tuple, List, Sequence, Union, Any
 from urllib import parse
 from lxml import html
 from contextlib import contextmanager
@@ -10,6 +10,7 @@ from pathlib import Path
 import lxml
 import brotli
 import shutil
+import pydlib as dl
 
 
 VZLJOT_PROXY = {
@@ -78,11 +79,11 @@ def parse_raw_headers_to_dict(file: str) -> dict:
             header_dict[head.strip()] = tail.strip()
     return header_dict
 
-def parse_raw_headers_from_file_to_dict_and_write_json_to_file(fname_from: str, fname_to: str = 'test-header.json'):
-    """
-    """
-    h_dict = parse_raw_headers_to_dict(fname_from)
-    write_header_dict_to_json_file(fname_to, h_dict)
+# def parse_raw_headers_from_file_to_dict_and_write_json_to_file(fname_from: str, fname_to: str = 'test-header.json'):
+#     """
+#     """
+#     h_dict = parse_raw_headers_to_dict(fname_from)
+#     write_header_dict_to_json_file(fname_to, h_dict)
                 
 
 def get_netloc(linc: str) -> str:
@@ -365,14 +366,81 @@ def get_relationship(fname: str, url: str, code: str, value: str, return_value: 
         data_json = f.read()
         # try
         data_dict = json.loads(data_json)
+        
         # TODO: обработать вызов
         _get_ownership_form_list__check_version(data_dict, version_api)
+        
+        
+        
         relationship_dict_list: list[dict] = data_dict[url]['response_json']
         if return_value == 'dict':
             relationship_result: dict[str, str] = {relationship_dict[code]: relationship_dict[value] for relationship_dict in relationship_dict_list}
         else:
             relationship_result: list[str] = [relationship_dict[code] for relationship_dict in relationship_dict_list]
     return relationship_result
+
+def get_relationship_v2(info2_fname: str, 
+                        code_path: str, 
+                        code_key: str, 
+                        value_path: str, 
+                        value_key: str,
+                        ) -> Mapping[str, str]:
+    """accept request_info2.json file format, code_path, code_key, value_path, value_key
+    and type return value, return dict {code:value, ...} 
+
+    Args:
+        info2_fname (str): json file format request_info2.json
+        code_path (str): path to code dict, forma: a`b`c
+        code_key (str):  code key
+        value_path (str): path to value dict, forma: a`b`c
+        value_key (str):  value key
+    Returns:
+        Mapping[str, str]: dict {some_code_value:some_value_value, some_code_value:some_value_value, ...}
+    """
+    #version torgi.gov.ru for check
+    version_api = '3.1'
+    # ownershp_code_list: list[str]
+    with open(info2_fname, 'rb') as f:
+        data_json = f.read()
+        # try
+        data_dict = json.loads(data_json)
+        
+    # TODO: обработать вызов
+    _get_ownership_form_list__check_version(data_dict, version_api)
+    
+    
+    
+    key_list: list[Any] = dl.get(data_dict, code_path + '`' + code_key, sep='`')
+    value_list: list[Any] =   dl.get(data_dict, value_path + '`' + value_key, sep='`')
+ 
+    key_value_zip = zip(key_list, value_list)    
+    # if return_value == 'dict':
+    key_value_dict: dict[str, str] = {key: value for key, value in key_value_zip}
+        # else:
+            # relationship_result: list[str] = [relationship_dict[code_path] for relationship_dict in relationship_dict_list]
+    return key_value_dict
+
+def _get_key_valu_dicts(code_path, value_path, relationship_dict_list):
+    for d in relationship_dict_list:
+        target_relationship_key_dict: dict = d
+        for key in code_path:
+            if not (target_relationship_key_dict := target_relationship_key_dict.get(key, {})):
+                break
+        if not target_relationship_key_dict:
+            continue
+        target_relationship_value_dict: dict = d
+        for key in value_path:
+            if not (target_relationship_value_dict := target_relationship_value_dict.get(key, {})):
+                break
+        if not target_relationship_value_dict:
+            continue
+        yield target_relationship_key_dict, target_relationship_value_dict
+    #     target_relationship_key_dict_list.append(target_relationship_key_dict)
+    #     target_relationship_value_dict_list.append(target_relationship_value_dict)
+    #     zip_dict_lists = zip(target_relationship_key_dict_list, target_relationship_value_dict_list)
+    # return zip_dict_lists
+
+
 
 def write_value_to_dict_in_json_file(fname: str, target_dict_paths: List[str], key_for_insert: str, value_for_insert: Union[list, dict]):
     """принимает json файл, путь и значение для вставки в json
@@ -398,6 +466,33 @@ def write_value_to_dict_in_json_file(fname: str, target_dict_paths: List[str], k
         json_str = json.dumps(loaded_dict, indent=4, ensure_ascii=False)
         f.seek(0)
         f.write(json_str)
+
+
+def write_value_to_dict_in_json_file_v2(fname: str, path: str, value: Any):
+    """принимает json файл, путь и значение для вставки в json
+    если target_dict_paths не существуе - создаёт его
+
+    Args:
+        fname (str): json file name
+        paths (str): path to dict: a`b`c`d
+        value_for_insert (Any): Amy valu for inserting
+    """
+    
+    with open(fname, 'r+', encoding='utf-8') as f:
+        loaded_dict: dict = json.loads(f.read())
+        # target_dict: dict = loaded_dict
+        
+        # target: Union[List, Mapping]
+        # for path in target_dict_paths:
+        #     if not path in target_dict.keys():
+        #         target_dict[path] = {}
+        #     target_dict = target_dict[path]
+        # target_dict[key_for_insert] = value_for_insert
+        loaded_dict = dl.update(loaded_dict, path, value, sep='`')
+        json_str = json.dumps(loaded_dict, indent=4, ensure_ascii=False)
+        f.seek(0)
+        f.write(json_str)
+    
     
 # "request_url": "https://torgi.gov.ru/new/nsi/v1/RELATIONSHIP_BIDD_HINTEXT",
 
@@ -466,8 +561,54 @@ def form_field(searsh_form_file: str, form_field_name: str, info2_file_name:str)
         a_h_value
         )
 
+def form_field_v2(searsh_form_file: str, form_field_name: str, info2_file_name:str):
+    # with open(info2_file_name) as info2_f:
+    # резервная копия
+    shutil.copy(searsh_form_file, 'copy.'+searsh_form_file)
+    with open(searsh_form_file, encoding='utf-8') as form_file:
+        form_dict: dict = json.loads(form_file.read())
+    url_key = dl.get(form_dict, f'form`{form_field_name}`info2_url', sep='`')
+    # url_key = form_dict['form'][form_field_name]['info2_url']
+    aviavailable_values_path = dl.get(form_dict, f'form`{form_field_name}`available_values`path', sep='`')
+    # aviavailable_values_path = form_dict['form'][form_field_name]['available_values']['key']
+    aviavailable_values_hint_path = dl.get(form_dict, f'form`{form_field_name}`available_values_hint`path', sep='`')
+    # aviavailable_values_hint_path = form_dict['form'][form_field_name]['available_values_hint']['key']
+    full_a_v_path = f'{url_key}`{aviavailable_values_path}'
+    # v_t_path = ['form', form_field_name, 'available_values']
+    full_a_v_h_path = f'{url_key}`{aviavailable_values_hint_path}'
+    # v_h_t_path = ['form', form_field_name, 'available_values_hint']
+    # aviavailable_values_hint_value = form_dict['form'][form_field_name]['available_values_hint']['value']
+    aviavailable_values_key = dl.get(form_dict, f'form`{form_field_name}`available_values`key', sep='`')
+    # aviavailable_values_key = 'values'
+    aviavailable_values_hint_key = dl.get(form_dict, f'form`{form_field_name}`available_values_hint`key', sep='`')
+
+
+    res: Mapping[str, str] = get_relationship_v2(info2_file_name, 
+                                  code_path=full_a_v_path, 
+                                  code_key=aviavailable_values_key,
+                                  value_path=full_a_v_h_path, 
+                                  value_key=aviavailable_values_hint_key)
+
+    # a_h_value = get_relationship_v2(info2_file_name, url=url_key, code=aviavailable_values_hint_path, value=aviavailable_values_hint_value, return_value='dict')
+    # keys = 
+    form_aviavailable_values_path = f'form`{form_field_name}`available_values`values'
+    form_aviavailable_values_hint_path = f'form`{form_field_name}`available_values_hint`values'
+    write_value_to_dict_in_json_file_v2(
+        searsh_form_file,
+        form_aviavailable_values_hint_path,
+        res
+        )
+    write_value_to_dict_in_json_file_v2(
+        searsh_form_file,
+        form_aviavailable_values_path, 
+        list(res.keys())
+        )
+
+
+
     
 if __name__ == '__main__':
     # res = get_request_json_response_dicts_dict(NEW_PYBLIC_LOTS_REG_LINK)
     # write_dict_or_list_to_json_file('win.06.05.24.request_info2.json', res)
-    form_field('search_form.json', 'Вид сделки', 'request_info2.json')
+    # form_field('search_form.json', 'Вид сделки', 'request_info2.json')
+    form_field_v2('search_form.v2.json', 'Форма проведения торгов', 'request_info2.json')

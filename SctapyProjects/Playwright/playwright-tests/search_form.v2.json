@@ -2,8 +2,7 @@
     "api_version": {
         "version": "3.1",
         "uinfo2_url": "https://torgi.gov.ru/new/api/system-content/SYSTEM_SETTINGS/CT_SY_0003",
-        "k_t_path": [],
-        "key": "stringValue"
+        "path": "response_json`stringValue"
     },
     "form": {
         "Поисковый запрос": {
@@ -14,6 +13,7 @@
             "name": "npaCodes",
             "info2_url": "https://torgi.gov.ru/new/nsi/v1/RELATIONSHIP_BIDD_HINTEXT",
             "available_values": {
+                "path": "response_json",
                 "key": "code",
                 "values": [
                     "hint1_1113PP",
@@ -72,8 +72,8 @@
                 ]
             },
             "available_values_hint": {
-                "key": "code",
-                "value": "fullName",
+                "path": "response_json",
+                "key": "fullName",
                 "values": {
                     "hint1_1113PP": "Постановление Правительства РФ от 28.08.2019 № 1113 \"Об аукционе в электронной форме по продаже права на заключение договора о закреплении и предоставлении доли квоты добычи (вылова) крабов, предоставленной в инвестиционных целях в области рыболовства, для осуществления промышленного рыболовства и (или) прибрежного рыболовства и заключении такого договора\"",
                     "hint2_RLU_2": "Постановление Правительства РФ от 24.12.2008 № 986 \"О проведении конкурса на право заключения договора пользования рыболовным участком для осуществления рыболовства в целях обеспечения ведения традиционного образа жизни и осуществления традиционной хозяйственной деятельности коренных малочисленных народов Севера, Сибири и Дальнего Востока Российской Федерации и о заключении такого договора\"",
@@ -136,7 +136,7 @@
             "name": "biddType",
             "info2_url": "https://torgi.gov.ru/new/nsi/v1/BIDD_TYPE",
             "available_values": {
-                "key": "code",
+                "path": "response_json`code",
                 "values": [
                     "ZK",
                     "178FZ",
@@ -171,8 +171,7 @@
                 ]
             },
             "available_values_hint": {
-                "key": "code",
-                "value": "name",
+                "path": "response_json`name",
                 "values": {
                     "ZK": "Аренда и продажа земельных участков",
                     "178FZ": "Продажа (приватизация) государственного и муниципального имущества",
@@ -212,7 +211,7 @@
             "name": "typeTransaction",
             "info2_url": "https://torgi.gov.ru/new/nsi/v1/TYPE_TRANSACTION?actual=true",
             "available_values": {
-                "key": "code",
+                "path": "response_json`code",
                 "values": [
                     "freeUse",
                     "other",
@@ -222,8 +221,7 @@
                 ]
             },
             "available_values_hint": {
-                "key": "code",
-                "value": "name",
+                "path": "response_json`name",
                 "values": {
                     "freeUse": "Безвозмездное пользование",
                     "other": "Иное",
@@ -238,13 +236,36 @@
             "name": "biddForm",
             "info2_url": "https://torgi.gov.ru/new/nsi/v1/RELATIONSHIP_BIDD_HINTEXT",
             "available_values": {
-                "key_path": ["biddForm", "code"],
-                "values": []
+                "path": "response_json`biddForm",
+                "key": "code",
+                "values": [
+                    "PK",
+                    "EA",
+                    "BC",
+                    "PP",
+                    "PA",
+                    "EK",
+                    "BOC",
+                    "BCU",
+                    "PPU",
+                    "OIP"
+                ]
             },
             "available_values_hint": {
-                "key_path": ["biddForm", "code"],
-                "value_path": ["biddForm", "name"],
-                "values": {}
+                "path": "response_json`biddForm",
+                "key": "name",
+                "values": {
+                    "PK": "Конкурс",
+                    "EA": "Электронный аукцион",
+                    "BC": "Электронный аукцион за долю",
+                    "PP": "Публичное предложение",
+                    "PA": "Аукцион",
+                    "EK": "Электронный конкурс",
+                    "BOC": "Продажа без объявления цены",
+                    "BCU": "Продажа без объявления цены  (цессия)",
+                    "PPU": "Публичное предложение (цессия)",
+                    "OIP": " Отбор инвестиционных проектов"
+                }
             },
             "selected_values": []
         },
@@ -257,8 +278,7 @@
             },
             "available_values_hint": {
                 "key": "",
-                "value": "",
-                "values": {}
+                "value": ""
             },
             "selected_values": []
         },
@@ -271,8 +291,7 @@
             },
             "available_values_hint": {
                 "key": "",
-                "value": "",
-                "values": {}
+                "value": ""
             },
             "selected_values": []
         },
@@ -285,8 +304,7 @@
             },
             "available_values_hint": {
                 "key": "",
-                "value": "",
-                "values": {}
+                "value": ""
             },
             "selected_values": []
         },
@@ -299,8 +317,7 @@
             },
             "available_values_hint": {
                 "key": "",
-                "value": "",
-                "values": {}
+                "value": ""
             },
             "selected_values": []
         }
