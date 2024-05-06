@@ -11,6 +11,11 @@ import lxml
 import brotli
 import shutil
 
+
+VZLJOT_PROXY = {
+  'http': 'http://SibiryakovDO:vzlsoFia1302@proxy:3128',
+  'https': 'http://SibiryakovDO:vzlsoFia1302@proxy:3128',
+}
 NEW_PYBLIC_LINK = 'https://torgi.gov.ru/new/public'
 NEW_PYBLIC_LOTS_REG_LINK = 'https://torgi.gov.ru/new/public/lots/reg'
 HEADERS_DIR = 'headers/'
@@ -294,8 +299,6 @@ def get_request_json_response_dicts_dict(linc: str, browser: str = 'firefox') ->
     return result
 
 
-# res = get_request_json_response_dicts_dict(NEW_PYBLIC_LOTS_REG_LINK)
-# write_dict_or_list_to_json_file('request_info2.json', res)
 
 # TODO: implement
 def _get_ownership_form_list__check_version(request_info2_data: dict, fun_version: str) -> bool:
@@ -381,8 +384,7 @@ def write_value_to_dict_in_json_file(fname: str, target_dict_paths: List[str], k
         key_for_insert (str): key name for insert value
         value_for_insert (Union[str, dict]): list or dict for inserting
     """
-    # резервная копия
-    shutil.copy(fname, 'copy.'+fname)
+    
     with open(fname, 'r+', encoding='utf-8') as f:
         loaded_dict: dict = json.loads(f.read())
         target_dict: dict = loaded_dict
@@ -413,7 +415,7 @@ FORM_FIELDS = [
     'Категория',
                ]
 
-def Нормативный_правовой_акт():
+def form_field_Нормативный_правовой_акт():
     url = 'https://torgi.gov.ru/new/nsi/v1/RELATIONSHIP_BIDD_HINTEXT'
     t_path = ['form', 'Нормативный правовой акт']
     a_key = 'available_values'
@@ -432,3 +434,40 @@ def Нормативный_правовой_акт():
         a_h_key,
         a_h_value
         )
+    
+def form_field(searsh_form_file: str, form_field_name: str, info2_file_name:str):
+    # with open(info2_file_name) as info2_f:
+    # резервная копия
+    shutil.copy(searsh_form_file, 'copy.'+searsh_form_file)
+    with open(searsh_form_file, encoding='utf-8') as form_file:
+        form_dict = json.loads(form_file.read())
+        url_key = form_dict['form'][form_field_name]['info2_url']
+        aviavailable_values_key = form_dict['form'][form_field_name]['available_values']['key']
+        aviavailable_values_hint_key = form_dict['form'][form_field_name]['available_values_hint']['key']
+        aviavailable_values_hint_value = form_dict['form'][form_field_name]['available_values_hint']['value']
+
+    v_t_path = ['form', form_field_name, 'available_values']
+    v_h_t_path = ['form', form_field_name, 'available_values_hint']
+    a_key = 'values'
+    a_h_key = 'values'
+
+    a_value = get_relationship(info2_file_name, url=url_key, code=aviavailable_values_key, value=aviavailable_values_hint_value, return_value='list')
+    a_h_value = get_relationship(info2_file_name, url=url_key, code=aviavailable_values_hint_key, value=aviavailable_values_hint_value, return_value='dict')
+    write_value_to_dict_in_json_file(
+        searsh_form_file,
+        v_t_path, 
+        a_key,
+        a_value
+        )
+    write_value_to_dict_in_json_file(
+        searsh_form_file,
+        v_h_t_path, 
+        a_h_key,
+        a_h_value
+        )
+
+    
+if __name__ == '__main__':
+    # res = get_request_json_response_dicts_dict(NEW_PYBLIC_LOTS_REG_LINK)
+    # write_dict_or_list_to_json_file('win.06.05.24.request_info2.json', res)
+    form_field('search_form.json', 'Вид сделки', 'request_info2.json')
