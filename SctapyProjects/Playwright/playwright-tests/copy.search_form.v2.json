@@ -2,7 +2,8 @@
     "api_version": {
         "version": "3.1",
         "uinfo2_url": "https://torgi.gov.ru/new/api/system-content/SYSTEM_SETTINGS/CT_SY_0003",
-        "path": "response_json`stringValue"
+        "path": "response_json",
+        "key": "stringValue"
     },
     "form": {
         "Поисковый запрос": {
@@ -136,7 +137,8 @@
             "name": "biddType",
             "info2_url": "https://torgi.gov.ru/new/nsi/v1/BIDD_TYPE",
             "available_values": {
-                "path": "response_json`code",
+                "path": "response_json",
+                "key": "code",
                 "values": [
                     "ZK",
                     "178FZ",
@@ -171,7 +173,8 @@
                 ]
             },
             "available_values_hint": {
-                "path": "response_json`name",
+                "path": "response_json",
+                "key": "name",
                 "values": {
                     "ZK": "Аренда и продажа земельных участков",
                     "178FZ": "Продажа (приватизация) государственного и муниципального имущества",
@@ -211,7 +214,8 @@
             "name": "typeTransaction",
             "info2_url": "https://torgi.gov.ru/new/nsi/v1/TYPE_TRANSACTION?actual=true",
             "available_values": {
-                "path": "response_json`code",
+                "path": "response_json",
+                "key": "code",
                 "values": [
                     "freeUse",
                     "other",
@@ -221,7 +225,8 @@
                 ]
             },
             "available_values_hint": {
-                "path": "response_json`name",
+                "path": "response_json",
+                "key": "name",
                 "values": {
                     "freeUse": "Безвозмездное пользование",
                     "other": "Иное",
@@ -238,25 +243,49 @@
             "available_values": {
                 "path": "response_json`biddForm",
                 "key": "code",
-                "values": []
+                "values": [
+                    "PK",
+                    "EA",
+                    "BC",
+                    "PP",
+                    "PA",
+                    "EK",
+                    "BOC",
+                    "BCU",
+                    "PPU",
+                    "OIP"
+                ]
             },
             "available_values_hint": {
                 "path": "response_json`biddForm",
                 "key": "name",
-                "values": {}
+                "values": {
+                    "PK": "Конкурс",
+                    "EA": "Электронный аукцион",
+                    "BC": "Электронный аукцион за долю",
+                    "PP": "Публичное предложение",
+                    "PA": "Аукцион",
+                    "EK": "Электронный конкурс",
+                    "BOC": "Продажа без объявления цены",
+                    "BCU": "Продажа без объявления цены  (цессия)",
+                    "PPU": "Публичное предложение (цессия)",
+                    "OIP": " Отбор инвестиционных проектов"
+                }
             },
             "selected_values": []
         },
         "Субъект местонахождения имущества": {
-            "name": "",
-            "info2_url": "",
+            "name": "dynSubjRF",
+            "info2_url": "https://torgi.gov.ru/new/nsi/v1/DYNAMIC_ATTR_SEARCH_OPTION",
             "available_values": {
-                "key": "",
+                "path": "response_json`mappingTable",
+                "key": "code",
                 "values": []
             },
             "available_values_hint": {
-                "key": "",
-                "value": ""
+                "path": "response_json`mappingTable`baseAttrValue",
+                "key": "name",
+                "values": {}
             },
             "selected_values": []
         },
