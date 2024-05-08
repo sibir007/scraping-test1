@@ -11,7 +11,12 @@ import lxml
 import brotli
 import shutil
 import pydlib as dl
+from datetime import datetime
 
+"""data time example
+now = datetime.datetime.now()  # Get the current datetime object
+formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+"""
 
 VZLJOT_PROXY = {
   'http': 'http://SibiryakovDO:vzlsoFia1302@proxy:3128',

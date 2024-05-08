@@ -470,7 +470,7 @@
             "selected_values": []
         },
         "Местонахождение имущества": {
-            "name": "",
+            "name": "fiasGUID",
             "info2_url": "",
             "available_values": {
                 "key": "",
@@ -483,7 +483,7 @@
             "selected_values": []
         },
         "Категория": {
-            "name": "",
+            "name": "catCode",
             "info2_url": "",
             "available_values": {
                 "key": "",
@@ -492,6 +492,35 @@
             "available_values_hint": {
                 "key": "",
                 "value": ""
+            },
+            "selected_values": []
+        },
+        "Статус лота": {
+            "name": "lotStatus",
+            "info2_url": "",
+            "available_values": {
+                "path": "",
+                "key": "",
+                "values": [
+                    "SUCCEED",
+                    "PUBLISHED",
+                    "APPLICATIONS_SUBMISSION",
+                    "DETERMINING_WINNER",
+                    "FAILED",
+                    "CANCELED"
+                ]
+            },
+            "available_values_hint": {
+                "path": "",
+                "key": "",
+                "values": {
+                    "SUCCEED": "Состоялся",
+                    "PUBLISHED": "Опубликован",
+                    "APPLICATIONS_SUBMISSION": "Прием заявок",
+                    "DETERMINING_WINNER": "Определение победителя",
+                    "FAILED": "Не состоялся",
+                    "CANCELED": "Отменен"
+                }
             },
             "selected_values": []
         },
