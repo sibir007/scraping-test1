@@ -30,6 +30,9 @@ COOKIES_DIR = 'coodies/'
 COOKIES_FIEL_EXTENSION = '.cookies'
 GENERAL_COOKIES_FILE_NAME = 'general' + COOKIES_FIEL_EXTENSION
 UBUNTY_HEADERS_JSON_FILE = 'ubuntu_chromium_version_122.0.6261.128.headers.json'
+EXCEL_LINK = 'https://torgi.gov.ru/new/api/public/lotcards/export/excel?lotStatus=PUBLISHED,APPLICATIONS_SUBMISSION,DETERMINING_WINNER&biddEndFrom=&biddEndTo=&pubFrom=&pubTo=&aucStartFrom=&aucStartTo=&text=&amoOrgCode=&npa=&byFirstVersion=true&sort=firstVersionPublicationDate,desc'
+
+
 
 VZLJOT_PROXY = {
   'http': 'http://SibiryakovDO:vzlsOfia1302@proxy:3128',
@@ -418,8 +421,8 @@ def get_relationship_v2(info2_fname: str,
     
     
     
-    key_list: list[Any] = get_dict_values(data_dict, code_path + '`' + code_key, sep='`')
-    value_list: list[Any] =   get_dict_values(data_dict, value_path + '`' + value_key, sep='`')
+    key_list: list[Any] = get_dict_values(data_dict, code_path + '`' + code_key)
+    value_list: list[Any] =   get_dict_values(data_dict, value_path + '`' + value_key)
  
     key_value_zip = zip(key_list, value_list)    
     # if return_value == 'dict':
@@ -427,6 +430,51 @@ def get_relationship_v2(info2_fname: str,
         # else:
             # relationship_result: list[str] = [relationship_dict[code_path] for relationship_dict in relationship_dict_list]
     return key_value_dict
+
+# TODO: доделать версию 3. available_values_hint.values
+# должен быть в формате {key: [{name: value}, ...], ...}
+def get_relationship_v3(info2_fname: str, 
+                        code_path: str, 
+                        code_key: str, 
+                        values_paths: str, 
+                        ) -> Mapping[str, Mapping[str, str]]:
+    """accept request_info2.json file format, code_path, code_key, value_path, value_key
+    and type return value, return dict {code:value, ...} 
+
+    Args:
+        info2_fname (str): json file format request_info2.json
+        code_path (str): path to code dict, forma: a`b`c
+        code_key (str):  code key
+        values_paths (str): path to paths_values dict list, forma: a`b`c
+    Returns:
+        Mapping[str, Mapping[str, str]]: dict {some_code_value:[{name: some_mame, value: some_value}, ...], ...}
+    """
+    #version torgi.gov.ru for check
+    version_api = '3.1'
+    # ownershp_code_list: list[str]
+    # with open(info2_fname, 'rb') as f:
+    #     data_json = f.read()
+    #     # try
+    #     data_dict = json.loads(data_json)
+    data_dict: dict = load_dict_from_json_file(info2_fname)    
+    # TODO: обработать вызов
+    _get_ownership_form_list__check_version(data_dict, version_api)
+    
+    
+    
+    key_list: list[Any] = get_dict_values(data_dict, code_path + '`' + code_key)
+    keys_paths_list: list[Mapping] =   get_dict_values(data_dict, values_paths)
+
+    for item in keys_paths_list:
+        map_item = {}
+
+    key_value_zip = zip(key_list, keys_paths_list)    
+    # if return_value == 'dict':
+    key_value_dict: dict[str, str] = {key: value for key, value in key_value_zip}
+        # else:
+            # relationship_result: list[str] = [relationship_dict[code_path] for relationship_dict in relationship_dict_list]
+    return key_value_dict
+
 
 
 def _get_key_valu_dicts(code_path, value_path, relationship_dict_list):
@@ -608,6 +656,41 @@ def form_field_v2(searsh_form_file: str, form_field_name: str, info2_file_name:s
         form_aviavailable_values_path, 
         list(res.keys())
         )
+# TODO: доделать версию 3. available_values_hint.values
+# должен быть в формате {key: [{name: value}, ...], ...}
+def form_field_v3(searsh_form_file: str, form_field_name: str, info2_file_name:str):
+    """for search_form.v3.json"""
+    # резервная копия
+    shutil.copy(searsh_form_file, 'copy.'+searsh_form_file)
+    # with open(searsh_form_file, encoding='utf-8') as form_file:
+    #     form_dict: dict = json.loads(form_file.read())
+    form_dict: dict = load_dict_from_json_file(searsh_form_file)
+    url_key = dl.get(form_dict, f'form`{form_field_name}`info2_url', sep='`')
+    aviavailable_values_path = dl.get(form_dict, f'form`{form_field_name}`available_values`path', sep='`')
+    aviavailable_values_hint_keys_paths = dl.get(form_dict, f'form`{form_field_name}`available_values_hint`keys_paths', sep='`')
+    full_a_v_path = f'{url_key}`{aviavailable_values_path}'
+    full_a_v_h_path = f'{url_key}`{aviavailable_values_hint_keys_paths}'
+    aviavailable_values_key = dl.get(form_dict, f'form`{form_field_name}`available_values`key', sep='`')
+    aviavailable_values_hint_key = dl.get(form_dict, f'form`{form_field_name}`available_values_hint`key', sep='`')
+
+
+    res: Mapping[str, str] = get_relationship_v3(info2_file_name, 
+                                  code_path=full_a_v_path, 
+                                  code_key=aviavailable_values_key,
+                                  values_paths=full_a_v_h_path)
+
+    form_aviavailable_values_path = f'form`{form_field_name}`available_values`values'
+    form_aviavailable_values_hint_path = f'form`{form_field_name}`available_values_hint`values'
+    write_value_to_dict_in_json_file_v2(
+        searsh_form_file,
+        form_aviavailable_values_hint_path,
+        res
+        )
+    write_value_to_dict_in_json_file_v2(
+        searsh_form_file,
+        form_aviavailable_values_path, 
+        list(res.keys())
+        )    
 
 def form_field_v2_субьект_местонаходения():
     path = f'https://torgi.gov.ru/new/nsi/v1/DYNAMIC_ATTR_SEARCH_OPTION'
@@ -644,5 +727,5 @@ if __name__ == '__main__':
     # res = get_request_json_response_dicts_dict(NEW_PYBLIC_LOTS_REG_LINK)
     # write_dict_or_list_to_json_file('win.06.05.24.request_info2.json', res)
     # form_field('search_form.json', 'Вид сделки', 'request_info2.json')
-    # form_field_v2('search_form.v2.json', 'Субъект местонахождения имущества', 'request_info2.json')
+    form_field_v2('search_form.v2.json', 'Электронная площадка', 'request_info2.json')
     
