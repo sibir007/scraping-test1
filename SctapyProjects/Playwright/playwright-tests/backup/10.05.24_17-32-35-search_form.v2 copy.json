@@ -7,19 +7,23 @@
     },
     "form": {
         "Версии": {
-            "name": "byFirstVersion",
+            "name": [
+                "value"
+            ],
             "required": true,
             "multi_value": false,
             "default": [
                 "true"
             ],
             "info2_url": "",
+            "redundant1": "sdfsdfdsf",
             "available_values": {
                 "path": "",
                 "key": "",
                 "values": []
             },
             "available_values_hint": {
+                "redundant1": "sdfsdfdsf",
                 "path": "",
                 "key": "",
                 "values": {}
@@ -844,7 +848,7 @@
             },
             "selected_values": [],
             "required": false,
-            "multi_value": true,
+            "multi_value": false,
             "default": [],
             "comment": ""
         },
@@ -896,7 +900,7 @@
             },
             "selected_values": [],
             "required": false,
-            "multi_value": true,
+            "multi_value": false,
             "default": [],
             "comment": ""
         },
@@ -1079,7 +1083,7 @@
             },
             "selected_values": [],
             "required": false,
-            "multi_value": true,
+            "multi_value": false,
             "default": [],
             "comment": ""
         },
@@ -1169,7 +1173,7 @@
             },
             "selected_values": [],
             "required": false,
-            "multi_value": true,
+            "multi_value": false,
             "default": [],
             "info2_url": "",
             "comment": ""
@@ -1321,7 +1325,7 @@
             },
             "selected_values": [],
             "required": false,
-            "multi_value": true,
+            "multi_value": false,
             "default": [],
             "comment": ""
         },

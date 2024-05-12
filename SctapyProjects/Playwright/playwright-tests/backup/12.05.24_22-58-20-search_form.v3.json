@@ -1819,23 +1819,23 @@
                 "value_value": "",
                 "values": {
                     "CANCELED": {
-                        "name": "Отменено",
+                        "name": "Отменено", 
                         "parent": null
                     },
                     "COMPLETED": {
-                        "name": "Завершено",
+                        "name": "Завершено", 
                         "parent": null
                     },
                     "DETERMINING_WINNER": {
-                        "name": "Определение победителя",
+                        "name": "Определение победителя", 
                         "parent": null
                     },
                     "APPLICATIONS_SUBMISSION": {
-                        "name": "Приём заявок",
+                        "name": "Приём заявок", 
                         "parent": null
                     },
                     "PUBLISHED": {
-                        "name": "Опубликовано",
+                        "name": "Опубликовано", 
                         "parent": null
                     }
                 }
@@ -1999,40 +1999,7 @@
                 "parent_value": "undefined",
                 "value_path": "response_json",
                 "value_value": "shortName",
-                "values": {
-                    "ETP_AVK": {
-                        "name": "АГЗ РТ",
-                        "parent": null
-                    },
-                    "ETP_EETP": {
-                        "name": "АО «ЕЭТП»",
-                        "parent": null
-                    },
-                    "ETP_RAD": {
-                        "name": "АО «РАД»",
-                        "parent": null
-                    },
-                    "ETP_MMVB": {
-                        "name": "ЭТП «Фабрикант» ",
-                        "parent": null
-                    },
-                    "ETP_SBAST": {
-                        "name": "АО «Сбербанк-АСТ» ",
-                        "parent": null
-                    },
-                    "ETP_TEKTORG": {
-                        "name": "ЭТП ТЭК-Торг ",
-                        "parent": null
-                    },
-                    "ETP_RTS": {
-                        "name": "РТС-тендер ",
-                        "parent": null
-                    },
-                    "ETP_GPB": {
-                        "name": "ЭТП Газпромбанк ",
-                        "parent": null
-                    }
-                }
+                "values": {}
             },
             "comment": "",
             "default": [],
@@ -2055,20 +2022,7 @@
                 "parent_value": "undefined",
                 "value_path": "",
                 "value_value": "",
-                "values": {
-                    "false": {
-                        "name": "Торги не приостановлены",
-                        "parent": null
-                    },
-                    "true": {
-                        "name": "Торги приостановлены",
-                        "parent": null
-                    },
-                    "": {
-                        "name": "Все",
-                        "parent": null
-                    }
-                }
+                "values": {}
             },
             "comment": "либо true либо не как, не обязательный",
             "default": [],
@@ -2267,38 +2221,6 @@
             "required": false,
             "selected_values": []
         },
-        "Правообладатель включен в перечень компаний с гос. участием": {
-            "available_values": {
-                "key_path": "",
-                "key_value": "",
-                "parent_path": "undefined",
-                "parent_value": "undefined",
-                "value_path": "",
-                "value_value": "",
-                "values": {
-                    "true": {
-                        "name": "Да",
-                        "parent": null
-                    },
-                    "": {
-                        "name": "Нет",
-                        "parent": null
-                    }
-                }
-            },
-            "comment": "",
-            "default": [],
-            "group": {
-                "name": "Правообладатель",
-                "parent": "form",
-                "sort_order": 3
-            },
-            "info2_url": "",
-            "multi_value": false,
-            "name": "rHGovPrt",
-            "required": false,
-            "selected_values": []
-        },
         "Наличие жалоб": {
             "available_values": {
                 "key_path": "",
@@ -2307,20 +2229,7 @@
                 "parent_value": "undefined",
                 "value_path": "",
                 "value_value": "",
-                "values": {
-                    "true": {
-                        "name": "Есть жалобы",
-                        "parent": null
-                    },
-                    "false": {
-                        "name": "Нет жалоб",
-                        "parent": null
-                    },
-                    "": {
-                        "name": "Все",
-                        "parent": null
-                    }
-                }
+                "values": {}
             },
             "comment": "",
             "default": [],
@@ -2343,20 +2252,7 @@
                 "parent_value": "undefined",
                 "value_path": "",
                 "value_value": "",
-                "values": {
-                    "true": {
-                        "name": "Есть решения",
-                        "parent": null
-                    },
-                    "false": {
-                        "name": "Нет решений",
-                        "parent": null
-                    },
-                    "": {
-                        "name": "Все",
-                        "parent": null
-                    }
-                }
+                "values": {}
             },
             "comment": "",
             "default": [],
@@ -2379,20 +2275,7 @@
                 "parent_value": "undefined",
                 "value_path": "",
                 "value_value": "",
-                "values": {
-                    "true": {
-                        "name": "Есть предписания",
-                        "parent": null
-                    },
-                    "false": {
-                        "name": "Нет предписаний",
-                        "parent": null
-                    },
-                    "": {
-                        "name": "Все лоты",
-                        "parent": null
-                    }
-                }
+                "values": {}
             },
             "comment": "",
             "default": [],

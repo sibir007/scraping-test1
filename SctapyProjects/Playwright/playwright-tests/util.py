@@ -15,13 +15,14 @@ from datetime import datetime
 
 """data time example
 now = datetime.datetime.now()  # Get the current datetime object
-formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+formatted_date = now.strftime("%d.%m.%y_%H-%M-%S")
 """
 
 VZLJOT_PROXY = {
   'http': 'http://SibiryakovDO:vzlsoFia1302@proxy:3128',
   'https': 'http://SibiryakovDO:vzlsoFia1302@proxy:3128',
 }
+BACKUP_DIR = 'backup/'
 NEW_PYBLIC_LINK = 'https://torgi.gov.ru/new/public'
 NEW_PYBLIC_LOTS_REG_LINK = 'https://torgi.gov.ru/new/public/lots/reg'
 HEADERS_DIR = 'headers/'
@@ -31,6 +32,49 @@ COOKIES_FIEL_EXTENSION = '.cookies'
 GENERAL_COOKIES_FILE_NAME = 'general' + COOKIES_FIEL_EXTENSION
 UBUNTY_HEADERS_JSON_FILE = 'ubuntu_chromium_version_122.0.6261.128.headers.json'
 EXCEL_LINK = 'https://torgi.gov.ru/new/api/public/lotcards/export/excel?lotStatus=PUBLISHED,APPLICATIONS_SUBMISSION,DETERMINING_WINNER&biddEndFrom=&biddEndTo=&pubFrom=&pubTo=&aucStartFrom=&aucStartTo=&text=&amoOrgCode=&npa=&byFirstVersion=true&sort=firstVersionPublicationDate,desc'
+EXCEL_LINK_DICT = {
+	"GET": {
+		"scheme": "https",
+		"host": "torgi.gov.ru",
+		"filename": "/new/api/public/lotcards/export/excel",
+		"query": {
+			"lotStatus": "PUBLISHED,APPLICATIONS_SUBMISSION,DETERMINING_WINNER",
+			"biddEndFrom": "",
+			"biddEndTo": "",
+			"pubFrom": "",
+			"pubTo": "",
+			"aucStartFrom": "",
+			"aucStartTo": "",
+			"catCode": "7",
+			"text": "",
+			"amoOrgCode": "",
+			"npa": "",
+			"byFirstVersion": "true",
+			"sort": "firstVersionPublicationDate,desc"
+		},
+		"remote": {
+			"Address": "95.167.245.141:443"
+		}
+	}
+}
+TORGI_GOV_SEARSH_LINK = 'https://torgi.gov.ru/new/api/public/lotcards/search?lotStatus=PUBLISHED,APPLICATIONS_SUBMISSION,DETERMINING_WINNER&byFirstVersion=true&withFacets=true&size=10&sort=firstVersionPublicationDate,desc'
+TORGI_GOV_SEARSH_DICT = {
+	"GET": {
+		"scheme": "https",
+		"host": "torgi.gov.ru",
+		"filename": "/new/api/public/lotcards/search",
+		"query": {
+			"lotStatus": "PUBLISHED,APPLICATIONS_SUBMISSION,DETERMINING_WINNER",
+			"byFirstVersion": "true",
+			"withFacets": "true",
+			"size": "10",
+			"sort": "firstVersionPublicationDate,desc"
+		},
+		"remote": {
+			"Address": "95.167.245.141:443"
+		}
+	}
+}
 
 
 
@@ -432,11 +476,12 @@ def get_relationship_v2(info2_fname: str,
     return key_value_dict
 
 # TODO: доделать версию 3. available_values_hint.values
-# должен быть в формате {key: [{name: value}, ...], ...}
+
 def get_relationship_v3(info2_fname: str, 
-                        code_path: str, 
-                        code_key: str, 
-                        values_paths: str, 
+                        path: str, 
+                        code_key: str,
+                        value_key: str, 
+                        parent_key: str
                         ) -> Mapping[str, Mapping[str, str]]:
     """accept request_info2.json file format, code_path, code_key, value_path, value_key
     and type return value, return dict {code:value, ...} 
@@ -445,9 +490,10 @@ def get_relationship_v3(info2_fname: str,
         info2_fname (str): json file format request_info2.json
         code_path (str): path to code dict, forma: a`b`c
         code_key (str):  code key
-        values_paths (str): path to paths_values dict list, forma: a`b`c
+        value_path (str): path to value dict, forma: a`b`c
+        value_key (str):  value key
     Returns:
-        Mapping[str, Mapping[str, str]]: dict {some_code_value:[{name: some_mame, value: some_value}, ...], ...}
+        Mapping[str, str]: dict {some_code_value:some_value_value, some_code_value:some_value_value, ...}
     """
     #version torgi.gov.ru for check
     version_api = '3.1'
@@ -462,18 +508,21 @@ def get_relationship_v3(info2_fname: str,
     
     
     
-    key_list: list[Any] = get_dict_values(data_dict, code_path + '`' + code_key)
-    keys_paths_list: list[Mapping] =   get_dict_values(data_dict, values_paths)
+    dict_list: list[dict] = dl.get(data_dict, path, sep='`')
+    # # for Субъект местонахождения имущества only"
+    "--------------разкоментировать для Субъект местонахождения имущества--------------------"
+    # dict_list = dict_list[0]['mappingTable']
+    # print(len(dict_list))
+    # print(path)
+    res_dict: dict = {}
+    for item in dict_list:
+        code_value = dl.get(item, code_key, sep='`')
+        value_value = dl.get(item, value_key, sep='`')
+        parent_value = dl.get(item, parent_key, sep='`')
+        res_dict[code_value] = {'name': value_value, 'parent': parent_value}
 
-    for item in keys_paths_list:
-        map_item = {}
-
-    key_value_zip = zip(key_list, keys_paths_list)    
-    # if return_value == 'dict':
-    key_value_dict: dict[str, str] = {key: value for key, value in key_value_zip}
-        # else:
             # relationship_result: list[str] = [relationship_dict[code_path] for relationship_dict in relationship_dict_list]
-    return key_value_dict
+    return res_dict
 
 
 
@@ -656,42 +705,40 @@ def form_field_v2(searsh_form_file: str, form_field_name: str, info2_file_name:s
         form_aviavailable_values_path, 
         list(res.keys())
         )
-# TODO: доделать версию 3. available_values_hint.values
-# должен быть в формате {key: [{name: value}, ...], ...}
-def form_field_v3(searsh_form_file: str, form_field_name: str, info2_file_name:str):
-    """for search_form.v3.json"""
+
+def form_field_v3(searsh_form_v3_file: str, form_field_name: str, info2_file_name:str):
     # резервная копия
-    shutil.copy(searsh_form_file, 'copy.'+searsh_form_file)
+    create_a_backup(searsh_form_v3_file)
+    # shutil.copy(searsh_form_v3_file, 'copy.'+searsh_form_v3_file)
     # with open(searsh_form_file, encoding='utf-8') as form_file:
     #     form_dict: dict = json.loads(form_file.read())
-    form_dict: dict = load_dict_from_json_file(searsh_form_file)
+    form_dict: dict = load_dict_from_json_file(searsh_form_v3_file)
     url_key = dl.get(form_dict, f'form`{form_field_name}`info2_url', sep='`')
-    aviavailable_values_path = dl.get(form_dict, f'form`{form_field_name}`available_values`path', sep='`')
-    aviavailable_values_hint_keys_paths = dl.get(form_dict, f'form`{form_field_name}`available_values_hint`keys_paths', sep='`')
-    full_a_v_path = f'{url_key}`{aviavailable_values_path}'
-    full_a_v_h_path = f'{url_key}`{aviavailable_values_hint_keys_paths}'
-    aviavailable_values_key = dl.get(form_dict, f'form`{form_field_name}`available_values`key', sep='`')
-    aviavailable_values_hint_key = dl.get(form_dict, f'form`{form_field_name}`available_values_hint`key', sep='`')
+    aviavailable_values_key_path = dl.get(form_dict, f'form`{form_field_name}`available_values`key_path', sep='`')
+    full_a_v_k_path = f'{url_key}`{aviavailable_values_key_path}'
+    aviavailable_values_key_value = dl.get(form_dict, f'form`{form_field_name}`available_values`key_value', sep='`')
+
+    # aviavailable_values_value_path = dl.get(form_dict, f'form`{form_field_name}`available_values`value_path', sep='`')
+    # full_a_v_v_path = f'{url_key}`{aviavailable_values_value_path}'
+    aviavailable_values_value_value = dl.get(form_dict, f'form`{form_field_name}`available_values`value_value', sep='`')
+
+    # aviavailable_values_parent_path = dl.get(form_dict, f'form`{form_field_name}`available_values`parent_path', sep='`')
+    # full_a_v_p_path = f'{url_key}`{aviavailable_values_value_path}'
+    aviavailable_values_parent_value = dl.get(form_dict, f'form`{form_field_name}`available_values`parent_value', sep='`')
 
 
-    res: Mapping[str, str] = get_relationship_v3(info2_file_name, 
-                                  code_path=full_a_v_path, 
-                                  code_key=aviavailable_values_key,
-                                  values_paths=full_a_v_h_path)
+    res: Mapping[str, Mapping[str, str]] = get_relationship_v3(info2_file_name, 
+                                  path=full_a_v_k_path, 
+                                  code_key=aviavailable_values_key_value,
+                                  value_key=aviavailable_values_value_value,
+                                  parent_key=aviavailable_values_parent_value
+                                  )
 
-    form_aviavailable_values_path = f'form`{form_field_name}`available_values`values'
-    form_aviavailable_values_hint_path = f'form`{form_field_name}`available_values_hint`values'
-    write_value_to_dict_in_json_file_v2(
-        searsh_form_file,
-        form_aviavailable_values_hint_path,
-        res
-        )
-    write_value_to_dict_in_json_file_v2(
-        searsh_form_file,
-        form_aviavailable_values_path, 
-        list(res.keys())
-        )    
-
+    form_dict['form'][form_field_name]['available_values']['values'] = res
+    write_dict_or_list_to_json_file(searsh_form_v3_file, form_dict)
+    
+    
+    
 def form_field_v2_субьект_местонаходения():
     path = f'https://torgi.gov.ru/new/nsi/v1/DYNAMIC_ATTR_SEARCH_OPTION'
     file_dict = load_dict_from_json_file('request_info2.json')
@@ -722,10 +769,387 @@ def form_field_v2_субьект_местонаходения():
         list(dict_info.keys())
         )
 
+
+
+# def check_list_structure(target_list: list, struct: list, target_name_name: str = 'undefined'):
+#     pass
+
+def check_dict_structure(target_dict: dict, struct: dict, target_dict_name: str = 'undefined'):
+    """получает на вход dict и structur, проверяет соответствие и 
+    в некоторых случаях исправляет структуру полученного dict:
+    - если элемент структуры отсутствует - вставляет его
+    - если элемент структуры присутствует но имеет не правильный 
+    тип меняет его (если отсутствует содержание)
+    - - если элемент структуры присутствует но имеет не правильный 
+    тип но при этом элемент имеет содержание - выводит предупреждение """
+    
+    def _make_descendants(field: dict, descendants: dict, field_name: str):
+        for key in descendants.keys():
+            field[key] = descendants[key]['default']()
+            print(f'add descendants field:{field_name}.{key} type {type(field[key])}')
+            if (chaild_descendants := descendants[key].get('descendants', None)):
+                _make_descendants(field[key], chaild_descendants, f'{field_name}.{key}')
+    
+    
+    def _existen_dict_key_process(dict_name: str, target_dict: dict, key: str, struct: dict):
+        if not type(target_dict[key]) == struct['type']:
+            if target_dict[key]:
+                print(f'field:{dict_name}.{key} contain not compatible type {type(target_dict[key])}, should be {struct["type"]}')
+                return
+            else: 
+                target_dict[key] = struct['default']()
+                print(f'field:{dict_name}.{key} change type to {struct["type"]}')
+                if (descendants := struct.get('descendants', None)) :
+                    # print(f'key: {key}')
+                    _make_descendants(target_dict[key], descendants, f'{dict_name}.{key}')
+        else:
+            if (descendants := struct.get('descendants', None)):
+                check_dict_structure(target_dict[key], descendants, f'{dict_name}.{key}')
+    
+    def check_for_consistens(target_dict: dict, struct: dict, target_dict_name: str):            
+        for key, value in struct.items():
+            if target_dict.get(key, None) is not None:
+                    _existen_dict_key_process(target_dict_name, target_dict, key, value)
+            else:
+                target_dict[key] = struct[key]['default']()
+                print(f'add field:{target_dict_name}.{key} type {type(target_dict[key])}')
+                if (descendants:=struct[key].get('descendants', None)):
+                    # print(f'key: {key}')
+                    _make_descendants(target_dict[key], descendants, f'{target_dict_name}.{key}')
+            
+    def check_for_redundancy(target_dict: dict, struct: dict, target_dict_name: str):
+        target_dict_key_set = set(target_dict.keys())
+        struct_key_set = set(struct.keys())
+        keys_diff = target_dict_key_set - struct_key_set
+        if (count:=len(keys_diff)):
+            keys_diff_list = list(keys_diff)
+            remaining_keys = []
+            deleted_keys_count = 0
+            print(f'dict:{target_dict_name} contain {count} redundan fields {keys_diff_list}')
+            for key in keys_diff_list:
+                if not target_dict[key]:
+                    del target_dict[key]
+                    deleted_keys_count += 1
+                else:
+                    remaining_keys.append(key)
+            print(f'remuved redundan fields count {deleted_keys_count}')
+            print(f'remaining redundan fields {remaining_keys}')
+            
+    
+    check_for_redundancy(target_dict, struct, target_dict_name) 
+    check_for_consistens(target_dict, struct, target_dict_name)
+    
+    
+FORM_V2_FORM_FIELD_STRUCT = {
+            "name": {
+                'type': str, 
+                "default": lambda : ""
+                },
+            "required": {
+                'type': bool, 
+                "default": lambda : False
+                },
+            "multi_value": {
+                'type': bool, 
+                "default": lambda : False
+                },
+            "default": {
+                'type': list, 
+                "default": lambda : list(), 
+            },
+            "info2_url": {
+                'type': str, 
+                "default": lambda : ""
+                },
+            "available_values": {
+                'type': dict, 
+                "default": lambda : dict(), 
+                'descendants': {
+                    "path": {
+                        'type': str, 
+                        "default": lambda : ""
+                        },
+                    "key": {
+                        'type': str, 
+                        "default": lambda : ""
+                        },
+                    "values": {
+                        'type': list, 
+                        "default": lambda : list(), 
+                        },
+                    },
+                },
+            "available_values_hint": {
+                'type': dict, 
+                "default": lambda : dict(), 
+                'descendants': {
+                    "path": {
+                        'type': str, 
+                        "default": lambda : ""
+                        },
+                    "key": {
+                        'type': str, 
+                        "default": lambda : ""
+                        },
+                    "values": {
+                        'type': dict, 
+                        "default": lambda : dict(), 
+                        },
+                    },
+                },
+            "selected_values": {
+                'type': list, 
+                "default": lambda : list(), 
+                },
+            "comment": {
+                'type': str, 
+                "default": lambda : ""
+                },
+            }
+
+    
+FORM_V3_FORM_FIELD_STRUCT = {
+            "group": {
+                'type': dict, 
+                "default": lambda : dict(),
+                'descendants': {
+                    "name": {
+                        'type': str, 
+                        "default": lambda : "form"
+                        },
+                    "parent": {
+                        'type': str, 
+                        "default": lambda : ""
+                        },
+                    "sort_order": {
+                        'type': int,
+                        'defoult': lambda : 0
+                        }
+                    },
+                },
+            "name": {
+                'type': str, 
+                "default": lambda : ""
+                },
+            "required": {
+                'type': bool, 
+                "default": lambda : False
+                },
+            "multi_value": {
+                'type': bool, 
+                "default": lambda : False
+                },
+            "default": {
+                'type': list, 
+                "default": lambda : list(), 
+            },
+            "info2_url": {
+                'type': str, 
+                "default": lambda : ""
+                },
+            "available_values": {
+                'type': dict, 
+                "default": lambda : dict(), 
+                'descendants': {
+                    "key_path": {
+                        'type': str, 
+                        "default": lambda : ""
+                        },
+                    "key_value": {
+                        'type': str, 
+                        "default": lambda : ""
+                        },
+                    "value_path": {
+                        'type': str, 
+                        "default": lambda : ""
+                        },
+                    "value_value": {
+                        'type': str, 
+                        "default": lambda : ""
+                        },
+                    "parent_path": {
+                        'type': str, 
+                        "default": lambda : ""
+                        },
+                    "parent_value": {
+                        'type': str, 
+                        "default": lambda : ""
+                        },
+                    "values": {
+                        'type': dict, 
+                        "default": lambda : dict(), 
+                        },
+                    },
+                },
+            "selected_values": {
+                'type': list, 
+                "default": lambda : list(), 
+                },
+            "comment": {
+                'type': str, 
+                "default": lambda : ""
+                },
+            }
+
+
+def create_a_backup(fname: str):
+    """принимает file name - создаёт резурвную копию"""
+    date_time = get_formated_curent_date_time()
+    shutil.copy(fname, f'{BACKUP_DIR}{date_time}-{fname}')
+
+
+def check_form_v2_fields_structure(form_v2_fname: str):
+
+    """проеряет структуру поля формы, 
+    вставляет недостоющие поля,
+    если поле существует, проверяет его тип,
+    если тип не верный меняет его тип 
+    только в случае если оно пустое, не содержит данных
+    если поле не пустое пишет предупреждение в stdout"""
+    # global FORM_V2_FORM_FIELD_STRUCT
+    create_a_backup(form_v2_fname)
+    target_dict: dict = load_dict_from_json_file(form_v2_fname)
+    form_dict: dict = target_dict['form']
+    for field_name, field in form_dict.items():
+        check_dict_structure(field, FORM_V2_FORM_FIELD_STRUCT, field_name)
+    write_dict_or_list_to_json_file(form_v2_fname, target_dict)
+    # check_form_v2_fields_structure(form_dict)
+    # _process_check_structure(form_dict, FORM_V2_FORM_FIELD_STRUCT)
+    
+def test_check_dict_structure():
+    test1 = {
+        'name': [],
+        'comment': "comment",
+        "info2_url": {'key': 'value'},
+        'not_struc_key1': '',
+        'not_struc_key2': 'value',
+        "available_values_hint": {
+                "path": {},
+                "key": "",
+                "values": {
+                    "SUCCEED": "Состоялся",
+                    "PUBLISHED": "Опубликован",
+                    "APPLICATIONS_SUBMISSION": "Прием заявок",
+                    "DETERMINING_WINNER": "Определение победителя",
+                    "FAILED": "Не состоялся",
+                    "CANCELED": "Отменен"
+                },
+                'not_struc_key3': '',
+                'not_struc_key4': 'value',
+                'not_struc_key4': [],
+                'not_struc_key4': ['value'],
+            },
+        }
+    check_dict_structure(test1, FORM_V2_FORM_FIELD_STRUCT, 'test1')
+   
+def get_formated_curent_date_time() -> str:
+    now = datetime.now()  # Get the current datetime object
+    return now.strftime("%d.%m.%y_%H-%M-%S")
+    # print(formatted_date)
+
+def print_to_file_os_enveron_var(fname: str):
+    with open(fname, 'wt', encoding='utf-8') as f:
+        
+        json.dump(obj=dict(os.environ.items()), fp=f, ensure_ascii=False, indent=4)
+    
+def sort_dict_recursiv(target_dict:dict) -> dict:
+    new_dict: dict = {}
+    for k in sorted(target_dict.keys()):
+        if type((value:=target_dict[k])) == dict:
+            value = sort_dict_recursiv(value)
+        new_dict[k] = value
+    return new_dict
+      
+def form_v2_to_v3():
+    target_file_dict = load_dict_from_json_file('search_form.v3.json')
+    target_dict: dict = target_file_dict['form']
+    for k, v in target_dict.items():
+        new_item = {}
+        new_item['multi_value'] = v.get('multi_value', '')
+        new_item['multi_value'] = v.get('multi_value', '')
+        new_item['multi_value'] = v.get('multi_value', '')
+        new_item['default'] = v.get('default', '')
+        new_item['info2_url'] = v.get('info2_url', '')
+        new_item['available_values'] = {}
+        new_item['available_values']['key_path'] = v['available_values']['path']
+        new_item['available_values']['key_value'] = v['available_values']['key']
+        new_item['available_values']['value_path'] = v['available_values_hint']['path']
+        new_item['available_values']['value_value'] = v['available_values_hint']['key']
+        new_item['available_values']['parent_path'] = ''
+        new_item['available_values']['parent_value'] = ''
+        new_item['available_values']['values'] = {}
+        new_item['selected_values'] = v.get('selected_values', '')
+        new_item['comment'] = v.get('comment', '')
+        
+        target_dict[k] = new_item
+    write_dict_or_list_to_json_file('search_form.v3.json', target_file_dict)    
+    
+    
+def sort_form_v3_for_group_and_sort_order():
+    create_a_backup('search_form.v3.json')
+    target_file_dictv3: dict = load_dict_from_json_file('search_form.v3.json')
+    target_groups = target_file_dictv3['groups']
+    target_form = target_file_dictv3['form']
+    temp_list = []
+    for k, v in target_form.items():
+        t = target_groups[target_form[k]['group']['name']]['sort_order'], target_form[k]['group']['sort_order'], k
+        temp_list.append(t)
+    sorted_list = sorted(temp_list)
+    rez_dict = {}   
+    for _, _, k in sorted_list:
+        rez_dict[k] = target_form[k]
+    
+    target_file_dictv3['form'] = rez_dict
+    write_dict_or_list_to_json_file('search_form.v3.json', target_file_dictv3)    
     
 if __name__ == '__main__':
     # res = get_request_json_response_dicts_dict(NEW_PYBLIC_LOTS_REG_LINK)
     # write_dict_or_list_to_json_file('win.06.05.24.request_info2.json', res)
     # form_field('search_form.json', 'Вид сделки', 'request_info2.json')
-    form_field_v2('search_form.v2.json', 'Электронная площадка', 'request_info2.json')
+    # form_field_v2('search_form.v2.json', 'Электронная площадка', 'request_info2.json')
+    # check_form_v2_fields_structure('search_form.v2 copy.json')
+    # print(type(TEST_DICT1['available_values']))
+    # print(FORM_V2_FORM_FIELD_STRUCT['available_values']['type'])
     
+    # print_dict(test1)
+    # check_form_v2_fields_structure('search_form.v2.json')
+    # print_to_file_os_enveron_var('os-env-11-05.json')
+    # os.environ.get("XDG_CONFIG_HOME") or Path("~/.config").expanduser()
+    # print(str(Path("~/.config").expanduser()))
+    # print(str(os.environ.get("XDG_CONFIG_HOME")))
+    # test_dict = {}
+    # check_dict_structure(test_dict, FORM_V3_FORM_FIELD_STRUCT)
+    # print_dict(test_dict)
+    # target_file_dict = load_dict_from_json_file('search_form.v3.json')
+    # target_dict: dict = target_file_dict['form']
+    # for k, v in target_dict.items():
+    #     check_dict_structure(v, FORM_V3_FORM_FIELD_STRUCT, k)
+    # write_dict_or_list_to_json_file('search_form.v3.json', target_file_dict)    
+    # target_file_dictv2 = load_dict_from_json_file('search_form.v2.json')['form']
+    # target_file_dictv3: dict = load_dict_from_json_file('search_form.v3.json')['form']
+    # for k,v in target_file_dictv2.items():
+    #     target_file_dictv3[k]['name'] = v['name']
+    # write_dict_or_list_to_json_file('search_form.v3.json', target_file_dictv3)    
+    # create_a_backup('search_form.v3.json')
+    # target_file_dictv3: dict = load_dict_from_json_file('search_form.v3.json')
+    # target_groups = target_file_dictv3['groups']
+    # target_form = target_file_dictv3['form']
+    # for _, v in target_form.items():
+    #     if not v['available_values']['parent_path']:
+    #         v['available_values']['parent_path'] = 'undefined'
+    #         v['available_values']['parent_value'] = 'undefined'
+    # write_dict_or_list_to_json_file('search_form.v3.json', target_file_dictv3)    
+
+    
+    # temp_list = []
+    # for k, v in target_form.items():
+    #     t = target_groups[target_form[k]['group']['name']]['sort_order'], target_form[k]['group']['sort_order'], k
+    #     temp_list.append(t)
+    # sorted_list = sorted(temp_list)
+    # rez_dict = {}   
+    # for _, _, k in sorted_list
+    #     rez_dict[k] = target_form[k]
+       
+    # target_file_dictv3['form'] = rez_dict
+    # write_dict_or_list_to_json_file('search_form.v3.json', target_file_dictv3)    
+    form_field_v3('search_form.v3.json', 'Электронная площадка', 'request_info2.json')    

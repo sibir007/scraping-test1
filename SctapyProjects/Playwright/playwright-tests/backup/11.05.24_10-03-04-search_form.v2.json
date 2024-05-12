@@ -844,7 +844,7 @@
             },
             "selected_values": [],
             "required": false,
-            "multi_value": true,
+            "multi_value": false,
             "default": [],
             "comment": ""
         },
@@ -896,7 +896,7 @@
             },
             "selected_values": [],
             "required": false,
-            "multi_value": true,
+            "multi_value": false,
             "default": [],
             "comment": ""
         },
@@ -1079,7 +1079,7 @@
             },
             "selected_values": [],
             "required": false,
-            "multi_value": true,
+            "multi_value": false,
             "default": [],
             "comment": ""
         },
@@ -1169,7 +1169,7 @@
             },
             "selected_values": [],
             "required": false,
-            "multi_value": true,
+            "multi_value": false,
             "default": [],
             "info2_url": "",
             "comment": ""
@@ -1321,7 +1321,7 @@
             },
             "selected_values": [],
             "required": false,
-            "multi_value": true,
+            "multi_value": false,
             "default": [],
             "comment": ""
         },

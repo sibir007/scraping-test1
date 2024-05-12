@@ -10,9 +10,7 @@
             "name": "byFirstVersion",
             "required": true,
             "multi_value": false,
-            "default": [
-                "true"
-            ],
+            "default": ["true"],
             "info2_url": "",
             "available_values": {
                 "path": "",
@@ -26,14 +24,12 @@
             },
             "selected_values": [],
             "comment": ""
-        },
+        },        
         "Грани": {
             "name": "withFacets",
             "required": true,
             "multi_value": false,
-            "default": [
-                "true"
-            ],
+            "default": ["true"],
             "info2_url": "",
             "available_values": {
                 "path": "",
@@ -52,9 +48,7 @@
             "name": "size",
             "required": true,
             "multi_value": false,
-            "default": [
-                "10"
-            ],
+            "default": ["10"],
             "info2_url": "",
             "available_values": {
                 "path": "",
@@ -73,10 +67,7 @@
             "name": "sort",
             "required": true,
             "multi_value": true,
-            "default": [
-                "firstVersionPublicationDate",
-                "desc"
-            ],
+            "default": ["firstVersionPublicationDate", "desc"],
             "info2_url": "",
             "available_values": {
                 "path": "",
@@ -115,19 +106,7 @@
             "required": false,
             "multi_value": false,
             "default": [],
-            "selected_values": [],
-            "info2_url": "",
-            "available_values": {
-                "path": "",
-                "key": "",
-                "values": []
-            },
-            "available_values_hint": {
-                "path": "",
-                "key": "",
-                "values": {}
-            },
-            "comment": ""
+            "selected_values": []
         },
         "Нормативный правовой акт": {
             "name": "npaCodes",
@@ -253,8 +232,7 @@
                     "hint1_recreation_EK": "Постановление Правительства РФ от 11.12.2023г. № 2112 \"Об утверждении Правил проведения конкурсов и аукционов на право заключения соглашения об осуществлении рекреационной деятельности в национальном парке\""
                 }
             },
-            "selected_values": [],
-            "comment": ""
+            "selected_values": []
         },
         "Вид торгов": {
             "name": "biddType",
@@ -334,8 +312,7 @@
                     "recreation": "На право заключения соглашения об осуществлении рекреационной деятельности в национальном парке"
                 }
             },
-            "selected_values": [],
-            "comment": ""
+            "selected_values": []
         },
         "Вид сделки": {
             "name": "typeTransaction",
@@ -365,8 +342,7 @@
                     "trustManagement": "Доверительное управление"
                 }
             },
-            "selected_values": [],
-            "comment": ""
+            "selected_values": []
         },
         "Форма проведения торгов": {
             "name": "biddForm",
@@ -406,8 +382,7 @@
                     "OIP": " Отбор инвестиционных проектов"
                 }
             },
-            "selected_values": [],
-            "comment": ""
+            "selected_values": []
         },
         "Субъект местонахождения имущества": {
             "name": "dynSubjRF",
@@ -602,30 +577,20 @@
                     "106": "Донецкая Народная Республика"
                 }
             },
-            "selected_values": [],
-            "required": false,
-            "multi_value": false,
-            "default": [],
-            "comment": ""
+            "selected_values": []
         },
         "Местонахождение имущества": {
             "name": "fiasGUID",
             "info2_url": "",
             "available_values": {
                 "key": "",
-                "values": [],
-                "path": ""
+                "values": []
             },
             "available_values_hint": {
                 "key": "",
-                "path": "",
-                "values": {}
+                "value": ""
             },
-            "selected_values": [],
-            "required": false,
-            "multi_value": false,
-            "default": [],
-            "comment": ""
+            "selected_values": []
         },
         "Категория": {
             "name": "catCode",
@@ -842,30 +807,10 @@
                     "618": "Осуществление рекреационной деятельности в национальном парке"
                 }
             },
-            "selected_values": [],
-            "required": false,
-            "multi_value": true,
-            "default": [],
-            "comment": ""
+            "selected_values": []
         },
         "Параметры лота": {
-            "comment": "раздел",
-            "name": "",
-            "required": false,
-            "multi_value": false,
-            "default": [],
-            "info2_url": "",
-            "available_values": {
-                "path": "",
-                "key": "",
-                "values": []
-            },
-            "available_values_hint": {
-                "path": "",
-                "key": "",
-                "values": {}
-            },
-            "selected_values": []
+            "comment": "раздел"
         },
         "Статус лота": {
             "name": "lotStatus",
@@ -894,11 +839,7 @@
                     "CANCELED": "Отменен"
                 }
             },
-            "selected_values": [],
-            "required": false,
-            "multi_value": true,
-            "default": [],
-            "comment": ""
+            "selected_values": []
         },
         "Отображение торгов с аннулированными результатами": {
             "name": "isAnnulled",
@@ -921,11 +862,7 @@
                     "": "Все торги"
                 }
             },
-            "selected_values": [],
-            "required": false,
-            "multi_value": false,
-            "default": [],
-            "comment": ""
+            "selected_values": []
         },
         "Валюта": {
             "name": "currCode",
@@ -946,11 +883,7 @@
                     "": "Не выбрано"
                 }
             },
-            "selected_values": [],
-            "required": false,
-            "multi_value": false,
-            "default": [],
-            "comment": ""
+            "selected_values": []
         },
         "Начальная цена от": {
             "name": "priceMinFrom",
@@ -971,11 +904,7 @@
                     "": "Не выбрано"
                 }
             },
-            "selected_values": [],
-            "required": false,
-            "multi_value": false,
-            "default": [],
-            "comment": ""
+            "selected_values": []
         },
         "Начальная цена до": {
             "name": "priceMinTo",
@@ -996,11 +925,7 @@
                     "": "Не выбрано"
                 }
             },
-            "selected_values": [],
-            "required": false,
-            "multi_value": false,
-            "default": [],
-            "comment": ""
+            "selected_values": []
         },
         "Финальная цена от": {
             "name": "priceFinFrom",
@@ -1021,11 +946,7 @@
                     "": "Не выбрано"
                 }
             },
-            "selected_values": [],
-            "required": false,
-            "multi_value": false,
-            "default": [],
-            "comment": ""
+            "selected_values": []
         },
         "Финальная цена до": {
             "name": "priceFinTo",
@@ -1046,11 +967,7 @@
                     "": "Не выбрано"
                 }
             },
-            "selected_values": [],
-            "required": false,
-            "multi_value": false,
-            "default": [],
-            "comment": ""
+            "selected_values": []
         },
         "Форма собственности": {
             "name": "ownForm",
@@ -1077,11 +994,7 @@
                     "97": "Государственная собственность (неразграниченная)"
                 }
             },
-            "selected_values": [],
-            "required": false,
-            "multi_value": true,
-            "default": [],
-            "comment": ""
+            "selected_values": []
         },
         "Торги среди МСП": {
             "name": "isMsp",
@@ -1096,33 +1009,12 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
-            },
-            "selected_values": [],
-            "required": false,
-            "multi_value": false,
-            "default": [],
-            "comment": ""
-        },
-        "Извещение": {
-            "comment": "раздел",
-            "name": "",
-            "required": false,
-            "multi_value": false,
-            "default": [],
-            "info2_url": "",
-            "available_values": {
-                "path": "",
-                "key": "",
-                "values": []
-            },
-            "available_values_hint": {
-                "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": []
+        },
+        "Извещение": {
+            "comment": "раздел"
         },
         "Номер извещения": {
             "name": "noticeNumber",
@@ -1134,14 +1026,10 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "не обязательное заначение, если не указывается в запрос не идёт",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": "не обязательное заначение, если не указывается в запрос не идёт"
         },
         "Статус извещения": {
             "name": "noticeStatus",
@@ -1167,12 +1055,7 @@
                     "CANCELED": "Отменено"
                 }
             },
-            "selected_values": [],
-            "required": false,
-            "multi_value": true,
-            "default": [],
-            "info2_url": "",
-            "comment": ""
+            "selected_values": []
         },
         "Дата окончания срока подачи заявок от": {
             "name": "biddEndFrom",
@@ -1184,14 +1067,10 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "дата в формате 2024-05-08",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": "дата в формате 2024-05-08"
         },
         "Дата окончания срока подачи заявок до": {
             "name": "biddEndTo",
@@ -1203,14 +1082,10 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "дата в формате 2024-05-08",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": "дата в формате 2024-05-08"
         },
         "Дата публикации от": {
             "name": "pubFrom",
@@ -1222,14 +1097,10 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "дата в формате 2024-05-08",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": "дата в формате 2024-05-08"
         },
         "Дата публикации до": {
             "name": "pubTo",
@@ -1241,14 +1112,10 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "дата в формате 2024-05-08",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": "дата в формате 2024-05-08"
         },
         "Дата проведения торгов от": {
             "name": "aucStartFrom",
@@ -1260,14 +1127,10 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "дата в формате 2024-05-08",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": "дата в формате 2024-05-08"
         },
         "Дата проведения торгов до": {
             "name": "aucStartTo",
@@ -1279,14 +1142,10 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "дата в формате 2024-05-08",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": "дата в формате 2024-05-08"
         },
         "Электронная площадка": {
             "name": "etpCode",
@@ -1319,11 +1178,7 @@
                     "ETP_GPB": "ЭТП Газпромбанк "
                 }
             },
-            "selected_values": [],
-            "required": false,
-            "multi_value": true,
-            "default": [],
-            "comment": ""
+            "selected_values": []
         },
         "Наличие приостановленных торгов": {
             "name": "isStopped",
@@ -1331,39 +1186,17 @@
             "available_values": {
                 "path": "",
                 "key": "",
-                "values": [
-                    "true"
-                ]
+                "values": ["true"]
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "либо true либо не как, не обязательный",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": "либо true либо не как, не обязательный"
         },
         "Организатор торгов": {
-            "comment": "раздел",
-            "name": "",
-            "required": false,
-            "multi_value": false,
-            "default": [],
-            "info2_url": "",
-            "available_values": {
-                "path": "",
-                "key": "",
-                "values": []
-            },
-            "available_values_hint": {
-                "path": "",
-                "key": "",
-                "values": {}
-            },
-            "selected_values": []
+            "comment": "раздел"
         },
         "Наименование орг": {
             "name": "orgName",
@@ -1375,14 +1208,10 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": ""
         },
         "ИНН орг": {
             "name": "orgInn",
@@ -1394,14 +1223,10 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": ""
         },
         "КПП орг": {
             "name": "orgKpp",
@@ -1413,14 +1238,10 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": ""
         },
         "ОГРН (ОГРНИП) орг": {
             "name": "orgOgrn",
@@ -1432,33 +1253,13 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": ""
         },
         "Правообладатель": {
-            "comment": "раздел",
-            "name": "",
-            "required": false,
-            "multi_value": false,
-            "default": [],
-            "info2_url": "",
-            "available_values": {
-                "path": "",
-                "key": "",
-                "values": []
-            },
-            "available_values_hint": {
-                "path": "",
-                "key": "",
-                "values": {}
-            },
-            "selected_values": []
+            "comment": "раздел"
         },
         "Наименование прав": {
             "name": "rHName",
@@ -1470,14 +1271,10 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": ""
         },
         "ИНН прав": {
             "name": "rHInn",
@@ -1489,14 +1286,10 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": ""
         },
         "КПП прав": {
             "name": "rHKpp",
@@ -1508,14 +1301,10 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": ""
         },
         "ОГРН (ОГРНИП) прав": {
             "name": "rHOgrn",
@@ -1527,55 +1316,29 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": ""
         },
         "Жалобы": {
-            "comment": "раздел",
-            "name": "",
-            "required": false,
-            "multi_value": false,
-            "default": [],
-            "info2_url": "",
-            "available_values": {
-                "path": "",
-                "key": "",
-                "values": []
-            },
-            "available_values_hint": {
-                "path": "",
-                "key": "",
-                "values": {}
-            },
-            "selected_values": []
+            "comment": "раздел"
         },
+
         "Наличие жалоб": {
             "name": "hasAppeals",
             "info2_url": "",
             "available_values": {
                 "path": "",
                 "key": "",
-                "values": [
-                    "true",
-                    "false"
-                ]
+                "values": ["true", "false"]
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": ""
         },
         "Наличие решений": {
             "name": "hasSolutions",
@@ -1583,21 +1346,14 @@
             "available_values": {
                 "path": "",
                 "key": "",
-                "values": [
-                    "true",
-                    "false"
-                ]
+                "values": ["true", "false"]
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": ""
         },
         "Наличие предписаний": {
             "name": "hasPrescriptions",
@@ -1605,21 +1361,14 @@
             "available_values": {
                 "path": "",
                 "key": "",
-                "values": [
-                    "true",
-                    "false"
-                ]
+                "values": ["true", "false"]
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": ""
         },
         "Орган контроля": {
             "name": "amoOrgCode",
@@ -1631,14 +1380,10 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": ""
         },
         "Шаблон": {
             "name": "",
@@ -1650,14 +1395,25 @@
             },
             "available_values_hint": {
                 "path": "",
-                "key": "",
-                "values": {}
+                "key": ""
             },
             "selected_values": [],
-            "comment": "",
-            "required": false,
-            "multi_value": false,
-            "default": []
+            "comment": ""
+        },
+        "Шаблон": {
+            "name": "",
+            "info2_url": "",
+            "available_values": {
+                "path": "",
+                "key": "",
+                "values": []
+            },
+            "available_values_hint": {
+                "path": "",
+                "key": ""
+            },
+            "selected_values": [],
+            "comment": ""
         }
     }
 }

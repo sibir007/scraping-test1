@@ -398,7 +398,7 @@ def print_to_file_os_enveron_var(fname: str):
         json.dump(obj=dict(os.environ.items()), fp=f, ensure_ascii=False, indent=4)
        
 
-print_to_file_os_enveron_var('win.os.enveron.items.json')
+# print_to_file_os_enveron_var('win.os.enveron.items.json')
 
 # for k, v in os.environ.items():
 #             print(f'{k}: {v}'.isascii())

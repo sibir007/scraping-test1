@@ -64,7 +64,7 @@ DOWNLOADER_MIDDLEWARES = {
 }
 
 "-----------------ZakupkiProxyDownloaderMiddleware------------------"
-VZLJOT_PROXY = 'http://SibiryakovDO:vzlsOfia1302@proxy:3128'
+VZLJOT_PROXY = 'http://SibiryakovDO:vzlsoFia1302@proxy:3128'
 
 
 
